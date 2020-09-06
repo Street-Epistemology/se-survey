@@ -1,0 +1,94 @@
+[
+  {
+    "groupName": "What is Truth?",
+    "questions": [
+      {
+        "question": "Truth is that which best matches external reality."
+      },
+      {
+        "question": "People experience the same reality and only interpret it differently."
+      },
+      {
+        "question": "Truth depends on the opinions and beliefs of people."
+      },
+      {
+        "question": "People create words and define their meaning."
+      },
+      {
+        "question": "Something is true if everyone agrees to it."
+      },
+      {
+        "question": "Strong belief, even without action, can change external reality."
+      }
+    ]
+  },
+  {
+    "groupName": "How does Belief Work?",
+    "questions": [
+      {
+        "question": "Some beliefs should not be questioned."
+      },
+      {
+        "question": "Someone can be certain of something yet still be mistaken."
+      },
+      {
+        "question": "It is bad when someone doubts their beliefs."
+      },
+      {
+        "question": "If all members of a society share a belief, they are justified to hold that belief."
+      },
+      {
+        "question": "Believing something that is false feels just like believing something that is true."
+      },
+      {
+        "question": "Feelings are a reliable way to discover truth."
+      }
+    ]
+  },
+  {
+    "groupName": "When should we believe?",
+    "questions": [
+      {
+        "question": "Believing something without evidence is admirable."
+      },
+      {
+        "question": "It is important to know where we came from and what happens after death."
+      },
+      {
+        "question": "Believing something that is false is okay if it gives you comfort."
+      },
+      {
+        "question": "I give all claims the benefit of the doubt when I first encounter them."
+      },
+      {
+        "question": "Someone is justified in their beliefs until they are proven wrong."
+      },
+      {
+        "question": "The most important criteria for my beliefs is that they match reality."
+      }
+    ]
+  },
+  {
+    "groupName": "When should we change our minds?",
+    "questions": [
+      {
+        "question": "I often investigate beliefs that do not match my own."
+      },
+      {
+        "question": "I am comfortable with saying: I don't know."
+      },
+      {
+        "question": "It is beneficial to find out when I am wrong about something."
+      },
+      {
+        "question": "I will abandon a belief if I discover reliable information that falsifies it."
+      },
+      {
+        "question": "I look for more information before I accept something as true."
+      },
+      {
+        "question": "It is possible that some of my beliefs are not true."
+      }
+    ]
+  }
+]
