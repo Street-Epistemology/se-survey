@@ -1,38 +1,67 @@
-.App {
+td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+  vertical-align: middle;
+}
+
+th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.scrl {
+    height: 800px;
+    overflow: scroll;
+}
+
+/* black table header */
+.bth {
+  background-color: #000000;
+  border-color: inherit;
+  color: #ffffff;
+  font-size: 17px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.bth:first-child {
+  text-indent: 2em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* table row cell */
+.trc {
+  border-color: inherit;
+  text-align: center;
+  min-width: 37px;
+  font-size: 26px;
+  padding: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* questions */
+.trc:nth-child(2) {
+  text-align: left;
+  font-size: 14px;
+  padding: 10px 5px;
 }
 
-.App-link {
-  color: #61dafb;
+/* checkboxes */
+.check {
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* banded row */
+.bd {
+  background-color: #dddddd;
 }
