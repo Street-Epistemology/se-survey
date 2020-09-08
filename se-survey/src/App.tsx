@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import logo from './images/se-logo-color.png';
 import questionJson from './files/questions.json';
 import { QuestionResponse, Question } from './components/Question';
+import { Confidence } from './utils/Confidence';
+import { stringify } from 'querystring';
 
 interface QuestionGroup {
   questions: QuestionResponse[];
@@ -13,9 +15,67 @@ const loadData = () => {
   return result;
 };
 
+const mapConfidenceToNumber = (confidence: Confidence | undefined): number => {
+  return (confidence ?? -1) + 1;
+};
+
+const mapNumberToConfidence = (value: number): Confidence | undefined => {
+  return value === 0 ? undefined : value - 1;
+};
+
+const toFlag = (
+  pos1: Confidence | undefined,
+  pos2: Confidence | undefined
+): string => {
+  const value = mapConfidenceToNumber(pos1) + mapConfidenceToNumber(pos2) * 6;
+  return value > 25
+    ? String.fromCharCode(22 + value)
+    : String.fromCharCode(65 + value);
+};
+
+const fromFlag = (flag: string): Array<Confidence | undefined> => {
+  const code = flag.charCodeAt(0);
+  const value = code >= 64 ? flag.charCodeAt(0) - 65 : flag.charCodeAt(0) - 22;
+  console.log(flag + value);
+  const pos1 = mapNumberToConfidence(value % 6);
+  const pos2 = mapNumberToConfidence(Math.floor(value / 6));
+  return [pos1, pos2];
+};
+
+const getHash = (groups: QuestionGroup[]): string => {
+  const questions = groups.flatMap((group) => group.questions);
+  const hashChars: string[] = [];
+  for (let i = 0; i < questions.length; i += 2)
+  {
+    const secondConfidence = i + 1 >= questions.length ? undefined : questions[i + 1].confidence;
+    const pairFlag = toFlag(questions[i].confidence, secondConfidence);
+    hashChars.push(pairFlag);
+  }
+
+  return hashChars.join('');
+};
+
+const loadHash = (hash: string): QuestionGroup[] => {
+  const result = loadData();
+  const questions = result.flatMap((group) => group.questions);
+  const setConfidenceAtIndex = (index: number, confidence: Confidence | undefined) : void => {
+    if (index < questions.length) questions[index].confidence = confidence;
+  }
+
+  for (let i = 0; i < hash.length; i++)
+  {
+    const confidences = fromFlag(hash[i]);
+    console.log(confidences);
+    setConfidenceAtIndex(i * 2, confidences[0]);
+    setConfidenceAtIndex((i * 2) + 1, confidences[1]);
+  }
+
+  return result;
+}
+
 const App = () => {
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
-    loadData()
+    loadHash('N13PN13PN13H')
   );
 
   const handleSelection = (response: QuestionResponse) => {
@@ -28,45 +88,51 @@ const App = () => {
     }
 
     setQuestionGroups(newGroups);
-    console.log(newGroups);
+    console.log(getHash(newGroups));
   };
 
   return (
     <div className="App">
-      <div className="container-m">
-        <tr>
-          <th>
-            <img src={logo} height={100} className="App-logo" alt="logo" />
-          </th>
-          <th>{'\tHOW DO WE KNOW\n\rWHAT WE KNOW?'}</th>
-        </tr>
-      </div>
-      <div className="scrl container-m">
-        {questionGroups.map((group, groupNo) => {
-          return (
-            <>
-              <tr>
-                <th className="bth" colSpan={2}>
-                  {group.groupName}
-                </th>
-                <th className="bth" colSpan={5}>
-                  Disagree ↔ Agree
-                </th>
-              </tr>
-              {group.questions.map((question, questionNo) => {
-                let lineNo = groupNo * 6 + questionNo + 1;
-                return (
-                  <Question
-                    key={question.question}
-                    response={question}
-                    questionNo={lineNo}
-                    callback={handleSelection}
-                  />
-                );
-              })}
-            </>
-          );
-        })}
+      <div className="container-s">
+        <table className="table table-bordered table-bordered ">
+          <thead>
+            <tr>
+              <th scope="col">
+                <img src={logo} height={100} className="App-logo" alt="logo" />
+              </th>
+              <th scope="col" align="center">
+                <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
+              </th>
+            </tr>
+          </thead>
+          {questionGroups.map((group, groupNo) => {
+            return (
+              <>
+                <thead className="thead-dark">
+                  <tr>
+                    <th className="bth" colSpan={2}>
+                      {group.groupName}
+                    </th>
+                    <th className="bth" colSpan={5}>
+                      Disagree ↔ Agree
+                    </th>
+                  </tr>
+                </thead>
+                {group.questions.map((question, questionNo) => {
+                  let lineNo = groupNo * 6 + questionNo + 1;
+                  return (
+                    <Question
+                      key={question.question}
+                      response={question}
+                      questionNo={lineNo}
+                      callback={handleSelection}
+                    />
+                  );
+                })}
+              </>
+            );
+          })}
+        </table>
       </div>
     </div>
   );

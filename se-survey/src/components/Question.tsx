@@ -24,9 +24,10 @@ export const Question: React.FC<QuestionResponseProps> = ({
     };
     return (
       <td
+        width={50}
         key={confidence}
         onClick={() => callback(value)}
-        className="trc check"
+        className="td-check"
       >
         {response.confidence === confidence ? '✓' : null}
       </td>
@@ -34,8 +35,7 @@ export const Question: React.FC<QuestionResponseProps> = ({
   });
   return (
     <tr>
-      <td>{questionNo}</td>
-      <td>{response.question}</td>
+      <td colSpan={2}>{questionNo + '. ' + response.question}</td>
       {buttons}
     </tr>
   );
