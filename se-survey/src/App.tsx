@@ -4,6 +4,8 @@ import questionJson from './files/questions.json';
 import { QuestionResponse, Question } from './components/Question';
 import { Confidence } from './utils/Confidence';
 import { stringify } from 'querystring';
+import { useRouteMatch, match } from 'react-router-dom';
+import { Match } from '@testing-library/react';
 
 interface QuestionGroup {
   questions: QuestionResponse[];
@@ -36,7 +38,6 @@ const toFlag = (
 const fromFlag = (flag: string): Array<Confidence | undefined> => {
   const code = flag.charCodeAt(0);
   const value = code >= 64 ? flag.charCodeAt(0) - 65 : flag.charCodeAt(0) - 22;
-  console.log(flag + value);
   const pos1 = mapNumberToConfidence(value % 6);
   const pos2 = mapNumberToConfidence(Math.floor(value / 6));
   return [pos1, pos2];
@@ -45,9 +46,9 @@ const fromFlag = (flag: string): Array<Confidence | undefined> => {
 const getHash = (groups: QuestionGroup[]): string => {
   const questions = groups.flatMap((group) => group.questions);
   const hashChars: string[] = [];
-  for (let i = 0; i < questions.length; i += 2)
-  {
-    const secondConfidence = i + 1 >= questions.length ? undefined : questions[i + 1].confidence;
+  for (let i = 0; i < questions.length; i += 2) {
+    const secondConfidence =
+      i + 1 >= questions.length ? undefined : questions[i + 1].confidence;
     const pairFlag = toFlag(questions[i].confidence, secondConfidence);
     hashChars.push(pairFlag);
   }
@@ -55,27 +56,86 @@ const getHash = (groups: QuestionGroup[]): string => {
   return hashChars.join('');
 };
 
-const loadHash = (hash: string): QuestionGroup[] => {
+const loadHash = (hash: string | undefined): QuestionGroup[] => {
   const result = loadData();
+  if (hash == undefined) return result;
   const questions = result.flatMap((group) => group.questions);
-  const setConfidenceAtIndex = (index: number, confidence: Confidence | undefined) : void => {
+  const setConfidenceAtIndex = (
+    index: number,
+    confidence: Confidence | undefined
+  ): void => {
     if (index < questions.length) questions[index].confidence = confidence;
-  }
+  };
 
-  for (let i = 0; i < hash.length; i++)
-  {
+  for (let i = 0; i < hash.length; i++) {
     const confidences = fromFlag(hash[i]);
-    console.log(confidences);
     setConfidenceAtIndex(i * 2, confidences[0]);
-    setConfidenceAtIndex((i * 2) + 1, confidences[1]);
+    setConfidenceAtIndex(i * 2 + 1, confidences[1]);
   }
 
   return result;
+};
+
+interface QuestionnaireProps {
+  questionGroups: QuestionGroup[];
+  handleSelection: (response: QuestionResponse) => void;
 }
 
+const Questionnaire: React.FC<QuestionnaireProps> = ({
+  questionGroups,
+  handleSelection,
+}) => {
+  return (
+    <div className="container-s">
+      <table className="table table-bordered table-bordered ">
+        <thead>
+          <tr>
+            <th scope="col">
+              <img src={logo} height={100} className="App-logo" alt="logo" />
+            </th>
+            <th scope="col" align="center">
+              <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
+            </th>
+          </tr>
+        </thead>
+        {questionGroups.map((group, groupNo) => {
+          return (
+            <>
+              <thead className="thead-dark">
+                <tr>
+                  <th className="bth" colSpan={2}>
+                    {group.groupName}
+                  </th>
+                  <th className="bth" colSpan={5}>
+                    Disagree ↔ Agree
+                  </th>
+                </tr>
+              </thead>
+              {group.questions.map((question, questionNo) => {
+                let lineNo = groupNo * 6 + questionNo + 1;
+                return (
+                  <Question
+                    key={question.question}
+                    response={question}
+                    questionNo={lineNo}
+                    callback={handleSelection}
+                  />
+                );
+              })}
+            </>
+          );
+        })}
+      </table>
+    </div>
+  );
+};
+
+type TParams = { id?: string | undefined };  
+
 const App = () => {
+  const match : match<TParams> = useRouteMatch();
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
-    loadHash('N13PN13PN13H')
+    loadHash(match.params.id)
   );
 
   const handleSelection = (response: QuestionResponse) => {
@@ -93,47 +153,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="container-s">
-        <table className="table table-bordered table-bordered ">
-          <thead>
-            <tr>
-              <th scope="col">
-                <img src={logo} height={100} className="App-logo" alt="logo" />
-              </th>
-              <th scope="col" align="center">
-                <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
-              </th>
-            </tr>
-          </thead>
-          {questionGroups.map((group, groupNo) => {
-            return (
-              <>
-                <thead className="thead-dark">
-                  <tr>
-                    <th className="bth" colSpan={2}>
-                      {group.groupName}
-                    </th>
-                    <th className="bth" colSpan={5}>
-                      Disagree ↔ Agree
-                    </th>
-                  </tr>
-                </thead>
-                {group.questions.map((question, questionNo) => {
-                  let lineNo = groupNo * 6 + questionNo + 1;
-                  return (
-                    <Question
-                      key={question.question}
-                      response={question}
-                      questionNo={lineNo}
-                      callback={handleSelection}
-                    />
-                  );
-                })}
-              </>
-            );
-          })}
-        </table>
-      </div>
+      <Questionnaire
+        questionGroups={questionGroups}
+        handleSelection={handleSelection}
+      />
     </div>
   );
 };
