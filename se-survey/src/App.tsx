@@ -162,7 +162,7 @@ const App = () => {
 
   const onCopy = () => {
     navigator.clipboard.writeText(url);
-  }
+  };
 
   const hash = getHash(questionGroups);
   const hashExp = new RegExp("^A*$");
@@ -182,24 +182,24 @@ const App = () => {
           />
           <h3 className="d-inline text-center">HOW DO WE KNOW WHAT WE KNOW?</h3>
           {!isEmpty ? (
-            <div className="d-flex justify-content-center">
-              <div className="text-wrap w-75 m-3 text-center">
-                <a
-                  className="border rounded p-2 d-inline align-middle"
-                  href={url}
-                >
+            <div className="mb-2 text-center mx-auto">
+              <div className="border rounded p-2 align-middle d-inline-block mt-2 bg-light">
+                <a className="text-break" href={url}>
                   {url}
                 </a>
-                <button className="btn btn-primary d-inline align-middle" onClick={onCopy}>
-                  <FontAwesomeIcon icon={faCopy} />
-                </button>
-                <button
-                  className="btn btn-primary d-inline align-middle"
-                  onClick={onReset}
-                >
-                  Reset
-                </button>
               </div>
+              <button
+                className="btn btn-primary d-inline align-middle ml-1 mt-2"
+                onClick={onCopy}
+              >
+                <FontAwesomeIcon icon={faCopy} />
+              </button>
+              <button
+                className="btn btn-primary d-inline align-middle ml-1 mt-2"
+                onClick={onReset}
+              >
+                Reset
+              </button>
             </div>
           ) : null}
         </div>
