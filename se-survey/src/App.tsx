@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import logo from './images/se-logo-color.png';
-import questionJson from './files/questions.json';
-import { QuestionResponse, Question } from './components/Question';
-import { Confidence } from './utils/Confidence';
-import { useRouteMatch, match } from 'react-router-dom';
+import React, { useState, Fragment } from "react";
+import logo from "./images/se-logo-color.png";
+import questionJson from "./files/questions.json";
+import { QuestionResponse, Question } from "./components/Question";
+import { Confidence } from "./utils/Confidence";
+import { useRouteMatch, match } from "react-router-dom";
 
 interface QuestionGroup {
   questions: QuestionResponse[];
@@ -51,7 +51,7 @@ const getHash = (groups: QuestionGroup[]): string => {
     hashChars.push(pairFlag);
   }
 
-  return hashChars.join('');
+  return hashChars.join("");
 };
 
 const loadHash = (hash: string | undefined): QuestionGroup[] => {
@@ -87,31 +87,31 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
     <table className="table table-bordered table-bordered ">
       {questionGroups.map((group, groupNo) => {
         return (
-          <>
-            <table className="table table-bordered table-bordered ">
-              <thead className="thead-dark">
-                <tr>
-                  <th className="bth" colSpan={2}>
-                    {group.groupName}
-                  </th>
-                  <th className="bth center" colSpan={5}>
-                    Disagree ↔ Agree
-                  </th>
-                </tr>
-              </thead>
-            </table>
-            {group.questions.map((question, questionNo) => {
-              let lineNo = groupNo * 6 + questionNo + 1;
-              return (
-                <Question
-                  key={question.question}
-                  response={question}
-                  questionNo={lineNo}
-                  callback={handleSelection}
-                />
-              );
-            })}
-          </>
+          <Fragment key={group.groupName}>
+            <thead className="thead-dark">
+              <tr>
+                <th className="bth" colSpan={2}>
+                  {group.groupName}
+                </th>
+                <th className="bth center" colSpan={5}>
+                  Disagree ↔ Agree
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.questions.map((question, questionNo) => {
+                let lineNo = groupNo * 6 + questionNo + 1;
+                return (
+                  <Question
+                    key={question.question}
+                    response={question}
+                    questionNo={lineNo}
+                    callback={handleSelection}
+                  />
+                );
+              })}
+            </tbody>
+          </Fragment>
         );
       })}
     </table>
@@ -142,21 +142,15 @@ const App = () => {
   return (
     <div className="App">
       <div className="container fluid">
-        <thead>
-          <tr>
-            <th scope="col">
-              <img
-                src={logo}
-                height={100}
-                className="App-logo m-2"
-                alt="logo"
-              />
-            </th>
-            <th scope="col" align="center">
-              <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
-            </th>
-          </tr>
-        </thead>
+        <div>
+          <img
+            src={logo}
+            height={100}
+            className="App-logo m-4 d-inline"
+            alt="logo"
+          />
+          <h3 className="d-inline">HOW DO WE KNOW WHAT WE KNOW?</h3>
+        </div>
         <Questionnaire
           questionGroups={questionGroups}
           handleSelection={handleSelection}
