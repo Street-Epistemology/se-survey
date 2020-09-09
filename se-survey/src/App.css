@@ -2,12 +2,16 @@
 .td-check {
   cursor: pointer;
   padding: 0px;
-  align-content: center;
+  text-align: center;
   vertical-align: middle;
   width: 40px;
 }
 
 th {
   vertical-align: middle;
+}
+
+th.center {
+  text-align: center;
 }
 

@@ -3,9 +3,7 @@ import logo from './images/se-logo-color.png';
 import questionJson from './files/questions.json';
 import { QuestionResponse, Question } from './components/Question';
 import { Confidence } from './utils/Confidence';
-import { stringify } from 'querystring';
 import { useRouteMatch, match } from 'react-router-dom';
-import { Match } from '@testing-library/react';
 
 interface QuestionGroup {
   questions: QuestionResponse[];
@@ -58,7 +56,7 @@ const getHash = (groups: QuestionGroup[]): string => {
 
 const loadHash = (hash: string | undefined): QuestionGroup[] => {
   const result = loadData();
-  if (hash == undefined) return result;
+  if (hash === undefined) return result;
   const questions = result.flatMap((group) => group.questions);
   const setConfidenceAtIndex = (
     index: number,
@@ -86,54 +84,44 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
   handleSelection,
 }) => {
   return (
-    <div className="container-s">
-      <table className="table table-bordered table-bordered ">
-        <thead>
-          <tr>
-            <th scope="col">
-              <img src={logo} height={100} className="App-logo" alt="logo" />
-            </th>
-            <th scope="col" align="center">
-              <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
-            </th>
-          </tr>
-        </thead>
-        {questionGroups.map((group, groupNo) => {
-          return (
-            <>
+    <table className="table table-bordered table-bordered ">
+      {questionGroups.map((group, groupNo) => {
+        return (
+          <>
+            <table className="table table-bordered table-bordered ">
               <thead className="thead-dark">
                 <tr>
                   <th className="bth" colSpan={2}>
                     {group.groupName}
                   </th>
-                  <th className="bth" colSpan={5}>
+                  <th className="bth center" colSpan={5}>
                     Disagree ↔ Agree
                   </th>
                 </tr>
               </thead>
-              {group.questions.map((question, questionNo) => {
-                let lineNo = groupNo * 6 + questionNo + 1;
-                return (
-                  <Question
-                    key={question.question}
-                    response={question}
-                    questionNo={lineNo}
-                    callback={handleSelection}
-                  />
-                );
-              })}
-            </>
-          );
-        })}
-      </table>
-    </div>
+            </table>
+            {group.questions.map((question, questionNo) => {
+              let lineNo = groupNo * 6 + questionNo + 1;
+              return (
+                <Question
+                  key={question.question}
+                  response={question}
+                  questionNo={lineNo}
+                  callback={handleSelection}
+                />
+              );
+            })}
+          </>
+        );
+      })}
+    </table>
   );
 };
 
-type TParams = { id?: string | undefined };  
+type TParams = { id?: string | undefined };
 
 const App = () => {
-  const match : match<TParams> = useRouteMatch();
+  const match: match<TParams> = useRouteMatch();
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     loadHash(match.params.id)
   );
@@ -153,10 +141,27 @@ const App = () => {
 
   return (
     <div className="App">
-      <Questionnaire
-        questionGroups={questionGroups}
-        handleSelection={handleSelection}
-      />
+      <div className="container fluid">
+        <thead>
+          <tr>
+            <th scope="col">
+              <img
+                src={logo}
+                height={100}
+                className="App-logo m-2"
+                alt="logo"
+              />
+            </th>
+            <th scope="col" align="center">
+              <h3>HOW DO WE KNOW WHAT WE KNOW?</h3>
+            </th>
+          </tr>
+        </thead>
+        <Questionnaire
+          questionGroups={questionGroups}
+          handleSelection={handleSelection}
+        />
+      </div>
     </div>
   );
 };
