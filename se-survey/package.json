@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "bootstrap": "^4.5.2",
+    "clipboard-copy": "^3.1.0",
     "react": "^16.13.1",
     "react-confirm-alert": "^2.6.2",
     "react-dom": "^16.13.1",

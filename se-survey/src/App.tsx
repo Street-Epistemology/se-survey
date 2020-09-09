@@ -161,7 +161,8 @@ const App = () => {
   };
 
   const onCopy = () => {
-    navigator.clipboard.writeText(url);
+    const copy = require('clipboard-copy');
+    copy(url);
   };
 
   const hash = getHash(questionGroups);
