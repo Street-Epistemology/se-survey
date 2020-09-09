@@ -161,7 +161,7 @@ const App = () => {
   };
 
   const onCopy = () => {
-    const copy = require('clipboard-copy');
+    const copy = require("clipboard-copy");
     copy(url);
   };
 
@@ -170,18 +170,27 @@ const App = () => {
   const isEmpty = !hashExp || hashExp.test(hash);
   const url =
     window.location.protocol + "//" + window.location.host + "/" + hash;
+  const tweetUrl =
+    "https://twitter.com/intent/tweet?text=" +
+    encodeURI(
+      "I completed the Street Epistemology questionnaire. Have a look at my results: &url=" +
+        url
+    );
 
   return (
     <div className="App">
       <div className="container fluid">
         <div>
-          <img
-            src={logo}
-            height={100}
-            className="App-logo m-4 d-inline"
-            alt="logo"
-          />
-          <h3 className="d-inline text-center">HOW DO WE KNOW WHAT WE KNOW?</h3>
+          <div className="row align-items-center">
+            <div className="col-md-auto text-center">
+              <img src={logo} className="logo m-4 col-sm" alt="logo" />
+            </div>
+            <div className="col align-middle">
+              <h3 className="col-sm text-center text-uppercase">
+                How do we know what we know?
+              </h3>
+            </div>
+          </div>
           {!isEmpty ? (
             <div className="mb-2 text-center mx-auto">
               <div className="border rounded p-2 align-middle d-inline-block mt-2 bg-light">
@@ -200,6 +209,12 @@ const App = () => {
                 onClick={onReset}
               >
                 Reset
+              </button>
+              <button
+                className="btn btn-primary d-inline align-middle ml-1 mt-2 mt-twitter-share-button"
+                onClick={() => (window.location.href = tweetUrl)}
+              >
+                Tweet
               </button>
             </div>
           ) : null}

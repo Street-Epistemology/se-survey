@@ -18,6 +18,11 @@
   }
 }
 
+img.logo {
+  max-width: 200px;
+  height: auto;
+}
+
 td.scale {
   font-size: 10px;
 }
