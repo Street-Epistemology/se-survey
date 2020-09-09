@@ -2,8 +2,20 @@
 .td-check {
   cursor: pointer;
   min-width: 25px;
+  font-size: 16px;
   text-align: center;
   vertical-align: middle;
+}
+@media screen and (min-width: 320px) {
+  .td-check {
+    min-width: calc(25px + 25 * ((100vw - 320px) / 1000));
+  }
+}
+@media screen and (min-width: 1000px) {
+  .td-check {
+    min-width: 50px;
+    font-size: 25px;
+  }
 }
 
 td.scale {
@@ -11,7 +23,7 @@ td.scale {
 }
 @media screen and (min-width: 320px) {
   td.scale {
-    font-size: calc(10px + 12 * ((100vw - 320px) / 680));
+    font-size: calc(10px + 12 * ((100vw - 320px) / 1000));
   }
 }
 @media screen and (min-width: 1000px) {
