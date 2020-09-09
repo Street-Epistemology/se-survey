@@ -3,7 +3,10 @@ import logo from "./images/se-logo-color.png";
 import questionJson from "./files/questions.json";
 import { QuestionResponse, Question } from "./components/Question";
 import { Confidence } from "./utils/Confidence";
-import { useRouteMatch, match } from "react-router-dom";
+import { useRouteMatch, match, useHistory } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 interface QuestionGroup {
   questions: QuestionResponse[];
@@ -90,9 +93,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
           <Fragment key={group.groupName}>
             <thead className="thead-dark">
               <tr>
-                <th className="bth align-middle">
-                  {group.groupName}
-                </th>
+                <th className="bth align-middle">{group.groupName}</th>
                 <th className="bth center align-middle text-center" colSpan={5}>
                   Disagree ↔ Agree
                 </th>
@@ -122,6 +123,7 @@ type TParams = { id?: string | undefined };
 
 const App = () => {
   const match: match<TParams> = useRouteMatch();
+  const hist = useHistory();
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     loadHash(match.params.id)
   );
@@ -137,6 +139,30 @@ const App = () => {
 
     setQuestionGroups(newGroups);
   };
+
+  const onReset = () => {
+    confirmAlert({
+      title: "Reset",
+      message: "Are you sure you want to clear all your answers?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            setQuestionGroups(loadData());
+            hist.push("/");
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(url);
+  }
 
   const hash = getHash(questionGroups);
   const hashExp = new RegExp("^A*$");
@@ -158,8 +184,19 @@ const App = () => {
           {!isEmpty ? (
             <div className="d-flex justify-content-center">
               <div className="text-wrap w-75 m-3 text-center">
-                <a className="border rounded p-2 d-inline align-middle" href={url}>{url}</a>
-                <button className="btn btn-primary d-inline align-middle">
+                <a
+                  className="border rounded p-2 d-inline align-middle"
+                  href={url}
+                >
+                  {url}
+                </a>
+                <button className="btn btn-primary d-inline align-middle" onClick={onCopy}>
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
+                <button
+                  className="btn btn-primary d-inline align-middle"
+                  onClick={onReset}
+                >
                   Reset
                 </button>
               </div>
