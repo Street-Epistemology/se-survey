@@ -84,7 +84,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
   handleSelection,
 }) => {
   return (
-    <table className="table table-bordered table-bordered ">
+    <table className="table table-bordered table-hover ">
       {questionGroups.map((group, groupNo) => {
         return (
           <Fragment key={group.groupName}>
@@ -158,7 +158,10 @@ const App = () => {
           {!isEmpty ? (
             <div className="d-flex justify-content-center">
               <div className="text-wrap w-75 m-3 text-center">
-                <a className="border rounded p-2" href={url}>{url}</a>
+                <a className="border rounded p-2 d-inline align-middle" href={url}>{url}</a>
+                <button className="btn btn-primary d-inline align-middle">
+                  Reset
+                </button>
               </div>
             </div>
           ) : null}
