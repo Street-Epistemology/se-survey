@@ -1,5 +1,5 @@
-import { Confidence, ConfidenceLevels } from '../utils/Confidence';
-import React from 'react';
+import { Confidence, ConfidenceLevels } from "../utils/Confidence";
+import React from "react";
 
 export interface QuestionResponse {
   confidence: Confidence | undefined;
@@ -24,18 +24,17 @@ export const Question: React.FC<QuestionResponseProps> = ({
     };
     return (
       <td
-        width={50}
         key={confidence}
         onClick={() => callback(value)}
-        className="td-check"
+        className="td-check m-0 p-0 align-middle"
       >
-        {response.confidence === confidence ? '✓' : null}
+        {response.confidence === confidence ? "✓" : null}
       </td>
     );
   });
   return (
     <tr>
-      <td colSpan={2}>{questionNo + '. ' + response.question}</td>
+      <td className="scale">{questionNo + ". " + response.question}</td>
       {buttons}
     </tr>
   );

@@ -90,10 +90,10 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
           <Fragment key={group.groupName}>
             <thead className="thead-dark">
               <tr>
-                <th className="bth" colSpan={2}>
+                <th className="bth align-middle">
                   {group.groupName}
                 </th>
-                <th className="bth center" colSpan={5}>
+                <th className="bth center align-middle text-center" colSpan={5}>
                   Disagree ↔ Agree
                 </th>
               </tr>
@@ -136,8 +136,13 @@ const App = () => {
     }
 
     setQuestionGroups(newGroups);
-    console.log(getHash(newGroups));
   };
+
+  const hash = getHash(questionGroups);
+  const hashExp = new RegExp("^A*$");
+  const isEmpty = !hashExp || hashExp.test(hash);
+  const url =
+    window.location.protocol + "//" + window.location.host + "/" + hash;
 
   return (
     <div className="App">
@@ -149,7 +154,14 @@ const App = () => {
             className="App-logo m-4 d-inline"
             alt="logo"
           />
-          <h3 className="d-inline">HOW DO WE KNOW WHAT WE KNOW?</h3>
+          <h3 className="d-inline text-center">HOW DO WE KNOW WHAT WE KNOW?</h3>
+          {!isEmpty ? (
+            <div className="d-flex justify-content-center">
+              <div className="text-wrap w-75 m-3 text-center">
+                <a className="border rounded p-2" href={url}>{url}</a>
+              </div>
+            </div>
+          ) : null}
         </div>
         <Questionnaire
           questionGroups={questionGroups}

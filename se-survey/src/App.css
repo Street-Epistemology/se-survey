@@ -1,17 +1,35 @@
 /* checkboxes */
 .td-check {
   cursor: pointer;
-  padding: 0px;
+  min-width: 25px;
   text-align: center;
   vertical-align: middle;
-  width: 40px;
+}
+
+td.scale {
+  font-size: 10px;
+}
+@media screen and (min-width: 320px) {
+  td.scale {
+    font-size: calc(10px + 12 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  td.scale {
+    font-size: 20px;
+  }
 }
 
 th {
-  vertical-align: middle;
+  font-size: 10px;
 }
-
-th.center {
-  text-align: center;
+@media screen and (min-width: 320px) {
+  th {
+    font-size: calc(10px + 12 * ((100vw - 320px) / 680));
+  }
 }
-
+@media screen and (min-width: 1000px) {
+  th {
+    font-size: 20px;
+  }
+}
