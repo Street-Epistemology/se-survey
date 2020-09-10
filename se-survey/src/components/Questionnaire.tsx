@@ -12,12 +12,14 @@ import {
 
 interface QuestionnaireProps {
   questionGroups: QuestionGroup[];
+  tickSymbol: string;
   useEmoji?: boolean;
   handleSelection: (response: QuestionResponse) => void;
 }
 
 export const Questionnaire: React.FC<QuestionnaireProps> = ({
   questionGroups,
+  tickSymbol,
   useEmoji,
   handleSelection,
 }) => {
@@ -45,7 +47,7 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
           <FontAwesomeIcon icon={faMeh} />
         </th>
         <th className="bth center align-middle text-center">
-          <FontAwesomeIcon icon={faSmile} />
+          <FontAwesomeIcon icon={faSmile}/>
         </th>
         <th className="bth center align-middle text-center">
           <FontAwesomeIcon icon={faLaugh} />
@@ -67,6 +69,7 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
                 return (
                   <Question
                     key={question.question}
+                    tickSymbol={tickSymbol}
                     response={question}
                     questionNo={lineNo}
                     callback={handleSelection}

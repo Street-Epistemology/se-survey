@@ -4,12 +4,14 @@ import React from "react";
 
 export interface QuestionResponseProps {
   response: QuestionResponse;
+  tickSymbol: string;
   questionNo: number | undefined;
   callback: (response: QuestionResponse) => void;
 }
 
 export const Question: React.FC<QuestionResponseProps> = ({
   response,
+  tickSymbol,
   questionNo,
   callback,
 }) => {
@@ -24,7 +26,7 @@ export const Question: React.FC<QuestionResponseProps> = ({
         onClick={() => callback(value)}
         className="td-check m-0 p-0 align-middle"
       >
-        {response.confidence === confidence ? "✓" : null}
+        {response.confidence === confidence ? (tickSymbol ?? "✓") : null}
       </td>
     );
   });

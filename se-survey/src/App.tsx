@@ -1,14 +1,13 @@
-import { QuestionGroup, QuestionResponse } from './Types';
+import { QuestionGroup, QuestionResponse } from "./Types";
 import React, { useState } from "react";
 import logo from "./images/se-logo-color.png";
 import questionJson from "./files/questions.json";
 import { useRouteMatch, match, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faCog } from "@fortawesome/free-solid-svg-icons";
 import { Questionnaire } from "./components/Questionnaire";
 import { mapHash, getHash } from "./utils/Hasher";
-
 
 export const loadData = () => {
   const result: QuestionGroup[] = JSON.parse(JSON.stringify(questionJson));
@@ -16,6 +15,7 @@ export const loadData = () => {
 };
 
 type TParams = { id?: string | undefined };
+const symbols: string[] = ["✓", "✔", "✘", "❌", "✅", "★", "🎵", "🔴"];
 
 const App = () => {
   const match: match<TParams> = useRouteMatch();
@@ -23,6 +23,8 @@ const App = () => {
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     mapHash(match.params.id, loadData())
   );
+  const [useEmoji, setUseEmoji] = useState<boolean>(true);
+  const [tickSymbol, setTickSymbol] = useState<string>("✓");
 
   const handleSelection = (response: QuestionResponse) => {
     let newGroups = [...questionGroups];
@@ -75,14 +77,52 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="overlay">
+        <div className="dropleft m-2 float-right menu-button">
+          <button
+            className="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <FontAwesomeIcon icon={faCog} />
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <span
+              className="dropdown-item"
+              onClick={() => setUseEmoji(!useEmoji)}
+            >
+              {useEmoji ? "Text Headings" : "Emoji Headings"}
+            </span>
+            <div className="dropdown-divider"></div>
+            {symbols.map((symbol) => {
+              return (
+                <span
+                  key={symbol}
+                  className={
+                    "dropdown-item" +
+                    (symbol === tickSymbol ? " bg-primary text-white" : "")
+                  }
+                  onClick={() => setTickSymbol(symbol)}
+                >
+                  {symbol}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       <div className="container fluid">
         <div>
           <div className="row align-items-center">
             <div className="col-md-auto text-center">
               <img src={logo} className="logo m-4 col-sm" alt="logo" />
             </div>
-            <div className="col align-middle">
-              <h3 className="col-sm text-center text-uppercase">
+            <div className="col align-middle text-center">
+              <h3 className="col-sm text-uppercase w-100">
                 How do we know what we know?
               </h3>
             </div>
@@ -117,7 +157,8 @@ const App = () => {
         </div>
         <Questionnaire
           questionGroups={questionGroups}
-          useEmoji={true}
+          tickSymbol={tickSymbol}
+          useEmoji={useEmoji}
           handleSelection={handleSelection}
         />
       </div>
