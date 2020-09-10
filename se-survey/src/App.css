@@ -1,7 +1,7 @@
 /* checkboxes */
 .td-check {
   cursor: pointer;
-  min-width: 25px;
+  min-width: 30px;
   font-size: 16px;
   text-align: center;
   vertical-align: middle;
@@ -23,30 +23,16 @@ img.logo {
   height: auto;
 }
 
-td.scale {
-  font-size: 10px;
+.scale-text {
+  font-size: 12px;
 }
 @media screen and (min-width: 320px) {
-  td.scale {
-    font-size: calc(10px + 12 * ((100vw - 320px) / 1000));
+  .scale-text {
+    font-size: calc(12px + 8 * ((100vw - 320px) / 1000));
   }
 }
 @media screen and (min-width: 1000px) {
-  td.scale {
-    font-size: 20px;
-  }
-}
-
-th {
-  font-size: 10px;
-}
-@media screen and (min-width: 320px) {
-  th {
-    font-size: calc(10px + 12 * ((100vw - 320px) / 1000));
-  }
-}
-@media screen and (min-width: 1000px) {
-  th {
+  .scale-text {
     font-size: 20px;
   }
 }

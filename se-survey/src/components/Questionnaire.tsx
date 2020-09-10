@@ -26,8 +26,8 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
   const defaultHeader = (groupName: string) => {
     return (
       <>
-        <th className="bth align-middle">{groupName}</th>
-        <th className="bth center align-middle text-center" colSpan={5}>
+        <th className="bth align-middle scale-text">{groupName}</th>
+        <th className="bth center align-middle text-center scale-text" colSpan={5}>
           Disagree ↔ Agree
         </th>
       </>
@@ -36,20 +36,20 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
   const emojiHeader = (groupName: string) => {
     return (
       <>
-        <th className="bth align-middle">{groupName}</th>
-        <th className="bth center align-middle text-center">
+        <th className="bth align-middle scale-text">{groupName}</th>
+        <th className="bth center align-middle text-center scale-text p-0">
           <FontAwesomeIcon icon={faAngry} />
         </th>
-        <th className="bth center align-middle text-center">
+        <th className="bth center align-middle text-center scale-text p-0">
           <FontAwesomeIcon icon={faFrown} />
         </th>
-        <th className="bth center align-middle text-center">
+        <th className="bth center align-middle text-center scale-text p-0">
           <FontAwesomeIcon icon={faMeh} />
         </th>
-        <th className="bth center align-middle text-center">
+        <th className="bth center align-middle text-center scale-text p-0">
           <FontAwesomeIcon icon={faSmile}/>
         </th>
-        <th className="bth center align-middle text-center">
+        <th className="bth center align-middle text-center scale-text p-0">
           <FontAwesomeIcon icon={faLaugh} />
         </th>
       </>

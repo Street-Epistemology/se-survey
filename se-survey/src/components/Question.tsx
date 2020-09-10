@@ -32,7 +32,7 @@ export const Question: React.FC<QuestionResponseProps> = ({
   });
   return (
     <tr>
-      <td className="scale">{questionNo + ". " + response.question}</td>
+      <td className="scale-text">{questionNo + ". " + response.question}</td>
       {buttons}
     </tr>
   );
