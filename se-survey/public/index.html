@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="We have opinions on many things, but have you ever thought about how you form those opinions? This questionnaire helps you shed light on how you decide what is true."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -15,6 +15,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,7 +27,7 @@
     -->
     <title>How do we know what we know?</title>
   </head>
-  
+
   <script type="text/javascript">
     // Single Page Apps for GitHub Pages
     // https://github.com/rafrex/spa-github-pages
@@ -39,22 +40,28 @@
     // When the single page app is loaded further down in this file,
     // the correct url will be waiting in the browser's history for
     // the single page app to route accordingly.
-    (function(l) {
+    (function (l) {
       if (l.search) {
         var q = {};
-        l.search.slice(1).split('&').forEach(function(v) {
-          var a = v.split('=');
-          q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
-        });
+        l.search
+          .slice(1)
+          .split("&")
+          .forEach(function (v) {
+            var a = v.split("=");
+            q[a[0]] = a.slice(1).join("=").replace(/~and~/g, "&");
+          });
         if (q.p !== undefined) {
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + (q.p || '') +
-            (q.q ? ('?' + q.q) : '') +
-            l.hash
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) +
+              (q.p || "") +
+              (q.q ? "?" + q.q : "") +
+              l.hash
           );
         }
       }
-    }(window.location))
+    })(window.location);
   </script>
 
   <body>
