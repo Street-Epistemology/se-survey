@@ -1,10 +1,6 @@
-import { Confidence, ConfidenceLevels } from "../utils/Confidence";
+import { QuestionResponse } from '../Types';
+import { ConfidenceLevels } from "../utils/Confidence";
 import React from "react";
-
-export interface QuestionResponse {
-  confidence: Confidence | undefined;
-  question: string;
-}
 
 export interface QuestionResponseProps {
   response: QuestionResponse;
