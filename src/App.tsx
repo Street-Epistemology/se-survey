@@ -2,7 +2,7 @@ import { QuestionGroup, QuestionResponse } from "./Types";
 import React, { useState } from "react";
 import logo from "./images/se-logo-color.png";
 import questionJson from "./files/questions.json";
-import { useRouteMatch, match, useHistory } from "react-router-dom";
+import { useRouteMatch, match as Match, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faCog } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +18,7 @@ type TParams = { id?: string | undefined };
 const symbols: string[] = ["✓", "✔", "✘", "❌", "✅", "★", "🎵", "🔴"];
 
 const App = () => {
-  const match: match<TParams> = useRouteMatch();
+  const match: Match<TParams> = useRouteMatch();
   const hist = useHistory();
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     mapHash(match.params.id, loadData())
