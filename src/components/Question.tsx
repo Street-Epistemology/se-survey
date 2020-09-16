@@ -15,18 +15,29 @@ export const Question: React.FC<QuestionResponseProps> = ({
   questionNo,
   callback,
 }) => {
-  let buttons = ConfidenceLevels.map((confidence) => {
-    let value = {
+  const buttons = ConfidenceLevels.map((confidence) => {
+    const isSelected = response.confidence === confidence;
+    const value = {
+      previousConfidence: response.confidence,
       confidence: confidence,
       question: response.question,
     };
     return (
       <td
         key={confidence}
-        onClick={() => callback(value)}
+        onClick={() => (isSelected ? null : callback(value))}
         className="td-check m-0 p-0 align-middle"
       >
-        {response.confidence === confidence ? tickSymbol ?? '✓' : null}
+        <div className="p-0">
+          <span className="m-0">
+            {response.confidence === confidence ? tickSymbol ?? '✓' : null}
+          </span>
+          <span className="m-0 opacity-30">
+            {response.previousConfidence === confidence
+              ? tickSymbol ?? '✓'
+              : null}
+          </span>
+        </div>
       </td>
     );
   });
