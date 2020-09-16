@@ -11,7 +11,7 @@ export interface MenuProps {
   onSymbolSelected: (args: string) => void;
 }
 
-const symbols: string[] = ['✓', '✔', '✘', '❌', '✅', '★', '🎵', '🔴'];
+const symbols: string[] = ['✓', '✔', '✘', '✅', '★', '🎵', '🔵'];
 
 const Menu: React.FC<MenuProps> = ({
   useEmoji,
