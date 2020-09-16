@@ -33,8 +33,10 @@ const App = () => {
     let newGroups = [...questionGroups];
     for (let group of newGroups) {
       for (let question of group.questions) {
-        if (question.question === response.question)
+        if (question.question === response.question) {
           question.confidence = response.confidence;
+          question.previousConfidence = response.previousConfidence;
+        }
       }
     }
 

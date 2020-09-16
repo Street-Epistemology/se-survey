@@ -37,6 +37,10 @@ img.logo {
   }
 }
 
+.opacity-30 {
+  opacity: 0.3;
+}
+
 .zoom {
   zoom: 1.5;
   -moz-transform: scale(1.5);
