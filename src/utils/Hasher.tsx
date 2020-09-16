@@ -1,5 +1,5 @@
 import { Confidence } from "./Confidence";
-import { QuestionGroup } from "../Types";
+import { QuestionGroup } from "../DataTypes";
 
 const mapConfidenceToNumber = (confidence: Confidence | undefined): number => {
   return (confidence ?? -1) + 1;
