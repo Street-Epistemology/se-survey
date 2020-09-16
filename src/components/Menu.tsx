@@ -5,7 +5,9 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 export interface MenuProps {
   useEmoji: boolean;
   selectedSymbol: string;
+  showChanges: boolean;
   onUseEmojiToggled: (args: boolean) => void;
+  onShowChangesToggled: (args: boolean) => void;
   onSymbolSelected: (args: string) => void;
 }
 
@@ -14,6 +16,8 @@ const symbols: string[] = ['✓', '✔', '✘', '❌', '✅', '★', '🎵', '�
 const Menu: React.FC<MenuProps> = ({
   useEmoji,
   selectedSymbol: tickSymbol,
+  showChanges,
+  onShowChangesToggled,
   onUseEmojiToggled,
   onSymbolSelected,
 }) => {
@@ -31,12 +35,28 @@ const Menu: React.FC<MenuProps> = ({
           <FontAwesomeIcon icon={faCog} />
         </button>
         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <span
-            className="dropdown-item pointer"
-            onClick={() => onUseEmojiToggled(!useEmoji)}
-          >
-            {useEmoji ? 'Text Headings' : 'Emoji Headings'}
-          </span>
+          <div className="checkbox dropdown-item">
+            <label>
+              <input
+                className="mr-2"
+                type="checkbox"
+                checked={useEmoji}
+                onClick={() => onUseEmojiToggled(!useEmoji)}
+              />
+              Use Emoji
+            </label>
+          </div>
+          <div className="checkbox dropdown-item">
+            <label>
+              <input
+                className="mr-2"
+                type="checkbox"
+                checked={showChanges}
+                onClick={() => onShowChangesToggled(!showChanges)}
+              />
+              Show Changes
+            </label>
+          </div>
           <div className="dropdown-divider"></div>
           {symbols.map((symbol) => {
             return (
