@@ -1,4 +1,4 @@
-import { QuestionGroup, QuestionResponse } from "./Types";
+import { QuestionGroup, QuestionResponse } from "./DataTypes";
 import React, { useState } from "react";
 import logo from "./images/se-logo-color.png";
 import questionJson from "./files/questions.json";

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Question } from "./Question";
-import { QuestionResponse, QuestionGroup } from "../Types";
+import { QuestionResponse, QuestionGroup } from "../DataTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngry,

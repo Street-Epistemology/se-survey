@@ -1,4 +1,4 @@
-import { QuestionResponse } from '../Types';
+import { QuestionResponse } from '../DataTypes';
 import { ConfidenceLevels } from "../utils/Confidence";
 import React from "react";
 
