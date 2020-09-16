@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 export interface MenuProps {
   useEmoji: boolean;
@@ -21,6 +22,7 @@ const Menu: React.FC<MenuProps> = ({
   onUseEmojiToggled,
   onSymbolSelected,
 }) => {
+  const history = useHistory();
   return (
     <div className="overlay">
       <div className="dropleft m-2 float-right menu-button">
@@ -72,6 +74,13 @@ const Menu: React.FC<MenuProps> = ({
               </span>
             );
           })}
+          <div className="dropdown-divider"></div>
+          <span
+            className="dropdown-item pointer"
+            onClick={() => history.push('/about')}
+          >
+            About
+          </span>
         </div>
       </div>
     </div>
