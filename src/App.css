@@ -19,6 +19,7 @@
 }
 
 img.logo {
+  cursor: pointer;
   max-width: 200px;
   height: auto;
 }
@@ -44,6 +45,18 @@ img.logo {
 .zoom {
   zoom: 1.5;
   -moz-transform: scale(1.5);
+}
+
+/*ABOUT PAGE*/
+.jumbotron {
+  background-image: url('./images/background_friends.jpg');
+  background-size: cover;
+}
+
+.difference {
+  color: white;
+  mix-blend-mode: difference;
+  filter: drop-shadow(0.05em 0.05em grey);
 }
 
 /*MENU*/
