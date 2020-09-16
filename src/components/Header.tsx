@@ -5,7 +5,9 @@ export const Header = () => {
   return (
     <div className="row align-items-center">
       <div className="col-md-auto text-center">
-        <img src={logo} className="logo m-4 col-sm" alt="logo" />
+        <a className="col-sm" href={'https://streetepistemology.com/'}>
+          <img src={logo} className="logo m-4" alt="logo" />
+        </a>
       </div>
       <div className="col align-middle text-center">
         <h3 className="col-sm text-uppercase w-100">
