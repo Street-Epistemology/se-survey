@@ -25,6 +25,7 @@ const App = () => {
 
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
+  const [showChanges, setShowChanges] = useState<boolean>(true);
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     questionGroupsFromHash
   );
@@ -84,7 +85,9 @@ const App = () => {
       <Menu
         useEmoji={useEmoji}
         selectedSymbol={tickSymbol}
+        showChanges={showChanges}
         onUseEmojiToggled={setUseEmoji}
+        onShowChangesToggled={setShowChanges}
         onSymbolSelected={setTickSymbol}
       />
 
@@ -104,6 +107,7 @@ const App = () => {
           questionGroups={questionGroups}
           tickSymbol={tickSymbol}
           useEmoji={useEmoji}
+          showChanges={showChanges}
           handleSelection={handleSelection}
         />
       </div>

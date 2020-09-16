@@ -8,6 +8,7 @@ interface QuestionnaireProps {
   questionGroups: QuestionGroup[];
   tickSymbol: string;
   useEmoji?: boolean;
+  showChanges?: boolean;
   handleSelection: (response: QuestionResponse) => void;
 }
 
@@ -15,6 +16,7 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
   questionGroups,
   tickSymbol,
   useEmoji,
+  showChanges,
   handleSelection,
 }) => (
   <table className="table table-bordered table-hover ">
@@ -37,6 +39,7 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
                   tickSymbol={tickSymbol}
                   response={question}
                   questionNo={lineNo}
+                  showChanges={showChanges}
                   callback={handleSelection}
                 />
               );

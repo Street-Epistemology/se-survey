@@ -2,17 +2,19 @@ import { QuestionResponse } from '../DataTypes';
 import { ConfidenceLevels } from '../utils/Confidence';
 import React from 'react';
 
-export interface QuestionResponseProps {
+export interface QuestionProps {
   response: QuestionResponse;
   tickSymbol: string;
   questionNo: number | undefined;
+  showChanges?: boolean;
   callback: (response: QuestionResponse) => void;
 }
 
-export const Question: React.FC<QuestionResponseProps> = ({
+export const Question: React.FC<QuestionProps> = ({
   response,
   tickSymbol,
   questionNo,
+  showChanges,
   callback,
 }) => {
   const buttons = ConfidenceLevels.map((confidence) => {
@@ -32,11 +34,13 @@ export const Question: React.FC<QuestionResponseProps> = ({
           <span className="m-0">
             {response.confidence === confidence ? tickSymbol ?? '✓' : null}
           </span>
-          <span className="m-0 opacity-30">
-            {response.previousConfidence === confidence
-              ? tickSymbol ?? '✓'
-              : null}
-          </span>
+          {showChanges ? (
+            <span className="m-0 opacity-30">
+              {response.previousConfidence === confidence
+                ? tickSymbol ?? '✓'
+                : null}
+            </span>
+          ) : null}
         </div>
       </td>
     );
