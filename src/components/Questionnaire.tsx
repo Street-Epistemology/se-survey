@@ -1,14 +1,8 @@
-import React, { Fragment } from "react";
-import { Question } from "./Question";
-import { QuestionResponse, QuestionGroup } from "../DataTypes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngry,
-  faFrown,
-  faMeh,
-  faSmile,
-  faLaugh,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { Fragment } from 'react';
+import { QuestionResponse, QuestionGroup } from '../DataTypes';
+import EmojiHeader from './EmojiHeader';
+import Question from './Question';
+import TextHeader from './TextHeader';
 
 interface QuestionnaireProps {
   questionGroups: QuestionGroup[];
@@ -22,64 +16,36 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
   tickSymbol,
   useEmoji,
   handleSelection,
-}) => {
-  const defaultHeader = (groupName: string) => {
-    return (
-      <>
-        <th className="bth align-middle scale-text">{groupName}</th>
-        <th className="bth center align-middle text-center scale-text" colSpan={5}>
-          Disagree ↔ Agree
-        </th>
-      </>
-    );
-  };
-  const emojiHeader = (groupName: string) => {
-    return (
-      <>
-        <th className="bth align-middle scale-text">{groupName}</th>
-        <th className="bth center align-middle text-center scale-text p-0">
-          <FontAwesomeIcon icon={faAngry} />
-        </th>
-        <th className="bth center align-middle text-center scale-text p-0">
-          <FontAwesomeIcon icon={faFrown} />
-        </th>
-        <th className="bth center align-middle text-center scale-text p-0">
-          <FontAwesomeIcon icon={faMeh} />
-        </th>
-        <th className="bth center align-middle text-center scale-text p-0">
-          <FontAwesomeIcon icon={faSmile}/>
-        </th>
-        <th className="bth center align-middle text-center scale-text p-0">
-          <FontAwesomeIcon icon={faLaugh} />
-        </th>
-      </>
-    );
-  };
-  return (
-    <table className="table table-bordered table-hover ">
-      {questionGroups.map((group, groupNo) => {
-        return (
-          <Fragment key={group.groupName}>
-            <thead className="thead-dark">
-              <tr>{useEmoji ? emojiHeader(group.groupName) : defaultHeader(group.groupName)}</tr>
-            </thead>
-            <tbody>
-              {group.questions.map((question, questionNo) => {
-                let lineNo = groupNo * 6 + questionNo + 1;
-                return (
-                  <Question
-                    key={question.question}
-                    tickSymbol={tickSymbol}
-                    response={question}
-                    questionNo={lineNo}
-                    callback={handleSelection}
-                  />
-                );
-              })}
-            </tbody>
-          </Fragment>
-        );
-      })}
-    </table>
-  );
-};
+}) => (
+  <table className="table table-bordered table-hover ">
+    {questionGroups.map((group, groupNo) => {
+      return (
+        <Fragment key={group.groupName}>
+          <thead className="thead-dark">
+            <tr>
+              {useEmoji
+                ? EmojiHeader(group.groupName)
+                : TextHeader(group.groupName)}
+            </tr>
+          </thead>
+          <tbody>
+            {group.questions.map((question, questionNo) => {
+              const lineNo = groupNo * 6 + questionNo + 1;
+              return (
+                <Question
+                  key={question.question}
+                  tickSymbol={tickSymbol}
+                  response={question}
+                  questionNo={lineNo}
+                  callback={handleSelection}
+                />
+              );
+            })}
+          </tbody>
+        </Fragment>
+      );
+    })}
+  </table>
+);
+
+export default Questionnaire;
