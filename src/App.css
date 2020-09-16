@@ -37,6 +37,11 @@ img.logo {
   }
 }
 
+.zoom {
+  zoom: 1.5;
+  -moz-transform: scale(1.5);
+}
+
 /*MENU*/
 .overlay {
   position: fixed;
@@ -44,6 +49,10 @@ img.logo {
   height: 100%;
   z-index: 9999;
   pointer-events: none;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .menu-button {
