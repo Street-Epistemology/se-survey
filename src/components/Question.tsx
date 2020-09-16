@@ -1,6 +1,6 @@
 import { QuestionResponse } from '../DataTypes';
-import { ConfidenceLevels } from "../utils/Confidence";
-import React from "react";
+import { ConfidenceLevels } from '../utils/Confidence';
+import React from 'react';
 
 export interface QuestionResponseProps {
   response: QuestionResponse;
@@ -26,14 +26,16 @@ export const Question: React.FC<QuestionResponseProps> = ({
         onClick={() => callback(value)}
         className="td-check m-0 p-0 align-middle"
       >
-        {response.confidence === confidence ? (tickSymbol ?? "✓") : null}
+        {response.confidence === confidence ? tickSymbol ?? '✓' : null}
       </td>
     );
   });
   return (
     <tr>
-      <td className="scale-text">{questionNo + ". " + response.question}</td>
+      <td className="scale-text">{questionNo + '. ' + response.question}</td>
       {buttons}
     </tr>
   );
 };
+
+export default Question;
