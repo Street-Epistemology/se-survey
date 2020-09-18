@@ -1,12 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
+import Popup from 'reactjs-popup';
+import { SessionList } from './SessionList';
+import { Session } from '../DataTypes';
 
 export interface MenuProps {
   useEmoji: boolean;
   selectedSymbol: string;
+  inSession: boolean;
   onUseEmojiToggled: (args: boolean) => void;
   onSymbolSelected: (args: string) => void;
+  onSessionSelected: (args: Session) => void;
 }
 
 const symbols: string[] = ['✓', '✔', '✘', '❌', '✅', '★', '🎵', '🔴'];
@@ -14,8 +19,10 @@ const symbols: string[] = ['✓', '✔', '✘', '❌', '✅', '★', '🎵', '�
 const Menu: React.FC<MenuProps> = ({
   useEmoji,
   selectedSymbol: tickSymbol,
+  inSession,
   onUseEmojiToggled,
   onSymbolSelected,
+  onSessionSelected,
 }) => {
   return (
     <div className="overlay">
@@ -37,6 +44,23 @@ const Menu: React.FC<MenuProps> = ({
           >
             {useEmoji ? 'Text Headings' : 'Emoji Headings'}
           </span>
+          <div className="dropdown-divider"></div>
+          <Popup
+            trigger={() => (
+              <span className="dropdown-item pointer">Join Session</span>
+            )}
+            modal
+            nested
+          >
+            {(close: () => void) => (
+              <SessionList
+                onSessionSelected={(session) => {
+                  onSessionSelected(session);
+                  close();
+                }}
+              />
+            )}
+          </Popup>
           <div className="dropdown-divider"></div>
           {symbols.map((symbol) => {
             return (

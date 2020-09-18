@@ -1,6 +1,5 @@
-import { QuestionGroup, QuestionResponse } from './DataTypes';
+import { QuestionGroup, QuestionResponse, Session } from './DataTypes';
 import React, { useState } from 'react';
-import questionJson from './files/questions.json';
 import * as Router from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import { mapHash, getHash } from './utils/Hasher';
@@ -9,27 +8,34 @@ import Menu from './components/Menu';
 import Questionnaire from './components/Questionnaire';
 import ShareInfo from './components/ShareInfo';
 import { getHashUrl } from './utils/UrlHelper';
-
-export const loadData = () => {
-  const result: QuestionGroup[] = JSON.parse(JSON.stringify(questionJson));
-  return result;
-};
+import * as dataHelper from './utils/dataHelper';
+import { FirebaseContext } from './firebase';
+import { loadData } from './utils/dataHelper';
+import * as mapper from './utils/mapper';
 
 type TParams = { id?: string | undefined };
 
 const App = () => {
+  const firebase = React.useContext(FirebaseContext);
   const match: Router.match<TParams> = Router.useRouteMatch();
   const hist = Router.useHistory();
 
-  const questionGroupsFromHash = mapHash(match.params.id, loadData());
+  const questionGroupsFromHash = mapHash(
+    match.params.id,
+    dataHelper.loadData()
+  );
 
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
+  const [session, setSession] = useState<Session | null>(null);
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
   const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
     questionGroupsFromHash
   );
 
+  const inSession = session !== null;
+
   const handleSelection = (response: QuestionResponse) => {
+    if (inSession) return;
     let newGroups = [...questionGroups];
     for (let group of newGroups) {
       for (let question of group.questions) {
@@ -66,6 +72,41 @@ const App = () => {
     copy(url);
   };
 
+  const unsubscribeFromSession = () => {
+    confirmAlert({
+      title: 'Reset',
+      message: 'Are you sure you want to disconnect from the session "' + session?.name + '"?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            if (!session?.id) return;
+            firebase?.unsubscribeFromSession(session.id, (session) => {
+              const responses = mapper.mapSessionToQuestionGroups(session);
+              setQuestionGroups(responses);
+            });
+
+            setSession(null);
+          },
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
+  const subscribeToSession = (session: Session) => {
+    if (!session?.id) return;
+    firebase?.subscribeToSession(session.id, (session) => {
+      const responses = mapper.mapSessionToQuestionGroups(session);
+      setQuestionGroups(responses);
+    });
+
+    setSession(session);
+  };
+
   const hash = getHash(questionGroups);
   const hashExp = new RegExp('^A*$');
   const isEmpty = !hashExp || hashExp.test(hash);
@@ -82,8 +123,10 @@ const App = () => {
       <Menu
         useEmoji={useEmoji}
         selectedSymbol={tickSymbol}
+        inSession={inSession}
         onUseEmojiToggled={setUseEmoji}
         onSymbolSelected={setTickSymbol}
+        onSessionSelected={subscribeToSession}
       />
 
       <div className="container fluid">
@@ -92,12 +135,23 @@ const App = () => {
           {!isEmpty ? (
             <ShareInfo
               hash={hash}
+              showReset={!inSession}
               onCopy={handleCopy}
               onReset={handleReset}
               tweetUrl={tweetUrl}
             />
           ) : null}
         </div>
+        {inSession && (
+          <div>
+            <button
+              className="btn btn-warning"
+              onClick={unsubscribeFromSession}
+            >
+              Disconnect
+            </button>
+          </div>
+        )}
         <Questionnaire
           questionGroups={questionGroups}
           tickSymbol={tickSymbol}
