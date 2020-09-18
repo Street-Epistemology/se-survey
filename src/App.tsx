@@ -74,17 +74,17 @@ const App = () => {
 
   const unsubscribeFromSession = () => {
     confirmAlert({
-      title: 'Reset',
-      message: 'Are you sure you want to disconnect from the session "' + session?.name + '"?',
+      title: 'Disconnect from Session',
+      message:
+        'Are you sure you want to disconnect from the session "' +
+        session?.name +
+        '"?',
       buttons: [
         {
           label: 'Yes',
           onClick: () => {
             if (!session?.id) return;
-            firebase?.unsubscribeFromSession(session.id, (session) => {
-              const responses = mapper.mapSessionToQuestionGroups(session);
-              setQuestionGroups(responses);
-            });
+            firebase?.unsubscribeFromSession(session.id);
 
             setSession(null);
           },
