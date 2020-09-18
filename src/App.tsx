@@ -28,15 +28,15 @@ const App = () => {
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
-  const [questionGroups, setQuestionGroups] = useState<QuestionGroup[]>(
-    questionGroupsFromHash
-  );
+  const [state, setState] = useState<
+    [QuestionGroup[], QuestionResponse | null]
+  >([questionGroupsFromHash, null]);
 
   const inSession = session !== null;
 
   const handleSelection = (response: QuestionResponse) => {
     if (inSession) return;
-    let newGroups = [...questionGroups];
+    let newGroups = [...state[0]];
     for (let group of newGroups) {
       for (let question of group.questions) {
         if (question.question === response.question)
@@ -44,7 +44,7 @@ const App = () => {
       }
     }
 
-    setQuestionGroups(newGroups);
+    setState([newGroups, { ...response } as QuestionResponse]);
   };
 
   const handleReset = () => {
@@ -55,7 +55,7 @@ const App = () => {
         {
           label: 'Yes',
           onClick: () => {
-            setQuestionGroups(loadData());
+            setState([loadData(), null]);
             hist.push('/');
           },
         },
@@ -97,17 +97,24 @@ const App = () => {
     });
   };
 
+  const handleSessionChange = (session: Session) => {
+    const groups = mapper.mapSessionToQuestionGroups(session);
+    const responses = mapper.flattenQuestionGroups(groups);
+    const index = session.lastQuestionIndex;
+    let changedResponse: QuestionResponse | null = null;
+    if (index)
+      changedResponse = index < responses.length ? responses[index] : null;
+
+    setState([groups, { ...changedResponse } as QuestionResponse]);
+  };
+
   const subscribeToSession = (session: Session) => {
     if (!session?.id) return;
-    firebase?.subscribeToSession(session.id, (session) => {
-      const responses = mapper.mapSessionToQuestionGroups(session);
-      setQuestionGroups(responses);
-    });
-
+    firebase?.subscribeToSession(session.id, handleSessionChange);
     setSession(session);
   };
 
-  const hash = getHash(questionGroups);
+  const hash = getHash(state[0]);
   const hashExp = new RegExp('^A*$');
   const isEmpty = !hashExp || hashExp.test(hash);
   const url = getHashUrl(hash);
@@ -153,7 +160,8 @@ const App = () => {
           </div>
         )}
         <Questionnaire
-          questionGroups={questionGroups}
+          questionGroups={state[0]}
+          lastResponse={state[1]}
           tickSymbol={tickSymbol}
           useEmoji={useEmoji}
           handleSelection={handleSelection}

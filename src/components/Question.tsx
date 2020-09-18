@@ -6,12 +6,14 @@ export interface QuestionResponseProps {
   response: QuestionResponse;
   tickSymbol: string;
   questionNo: number | undefined;
+  isActive?: boolean;
   callback: (response: QuestionResponse) => void;
 }
 
 export const Question: React.FC<QuestionResponseProps> = ({
   response,
   tickSymbol,
+  isActive,
   questionNo,
   callback,
 }) => {
@@ -31,7 +33,7 @@ export const Question: React.FC<QuestionResponseProps> = ({
     );
   });
   return (
-    <tr>
+    <tr className={isActive ? 'table-primary' : ''}>
       <td className="scale-text">{questionNo + '. ' + response.question}</td>
       {buttons}
     </tr>

@@ -1,4 +1,4 @@
-import { Session } from '../DataTypes';
+import { QuestionGroup, QuestionResponse, Session } from '../DataTypes';
 import { loadData } from './dataHelper';
 
 export const mapSessionToQuestionGroups = (session: Session) => {
@@ -25,4 +25,10 @@ export const mapSessionToQuestionGroups = (session: Session) => {
 
 export const mapAnyToSession = (input: any) => {
   return { ...input } as Session;
+};
+
+export const flattenQuestionGroups = (input: QuestionGroup[]) => {
+  return ([] as QuestionResponse[]).concat(
+    ...input.map((group) => group.questions)
+  );
 };

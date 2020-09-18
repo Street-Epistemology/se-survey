@@ -6,6 +6,7 @@ import TextHeader from './TextHeader';
 
 interface QuestionnaireProps {
   questionGroups: QuestionGroup[];
+  lastResponse: QuestionResponse | null;
   tickSymbol: string;
   useEmoji?: boolean;
   handleSelection: (response: QuestionResponse) => void;
@@ -13,6 +14,7 @@ interface QuestionnaireProps {
 
 export const Questionnaire: React.FC<QuestionnaireProps> = ({
   questionGroups,
+  lastResponse,
   tickSymbol,
   useEmoji,
   handleSelection,
@@ -35,6 +37,10 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
                 <Question
                   key={question.question}
                   tickSymbol={tickSymbol}
+                  isActive={
+                    lastResponse !== null &&
+                    lastResponse.question === question.question
+                  }
                   response={question}
                   questionNo={lineNo}
                   callback={handleSelection}
