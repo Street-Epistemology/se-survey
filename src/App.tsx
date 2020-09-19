@@ -1,5 +1,10 @@
-import { QuestionGroup, QuestionResponse, Session } from './DataTypes';
-import React, { useEffect, useState } from 'react';
+import {
+  QuestionGroup,
+  QuestionResponse,
+  Session,
+  SessionState,
+} from './DataTypes';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Router from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import { mapHash, getHash } from './utils/Hasher';
@@ -12,13 +17,9 @@ import * as dataHelper from './utils/dataHelper';
 import { FirebaseContext } from './firebase';
 import { loadData } from './utils/dataHelper';
 import * as mapper from './utils/mapper';
+import SessionStatus from './components/SessionStatus';
 
 type TParams = { id?: string | undefined };
-
-interface SessionState {
-  mySessionId: string | undefined;
-  spectatingSession: Session | undefined;
-}
 
 const App = () => {
   const firebase = React.useContext(FirebaseContext);
@@ -29,6 +30,25 @@ const App = () => {
     match.params.id,
     dataHelper.loadData()
   );
+
+  const handleUnload = (event: BeforeUnloadEvent) => {
+    const id = sessionState?.sessionId;
+    if (!id) return;
+    if (sessionState?.isHosting) {
+      firebase?.closeSession(id);
+    }
+    if (sessionState?.isSpectating) {
+      firebase?.unsubscribeFromSession(id);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleUnload);
+    if (isComplete && thankYou && thankYou.current) {
+      thankYou.current.scrollIntoView({ behavior: 'auto' });
+    }
+    return () => window.removeEventListener('beforeunload', handleUnload);
+  });
 
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
   const [sessionState, setSessionState] = useState<SessionState>();
@@ -89,8 +109,28 @@ const App = () => {
   };
 
   const unsubscribeFromSession = () => {
-    const id = sessionState?.spectatingSession?.id;
+    const id = sessionState?.sessionId;
     if (!id) return;
+    if (sessionState?.isHosting) {
+      confirmAlert({
+        title: 'Disconnect from Session',
+        message: 'Are you sure you want to stop broadcasting your session?',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => {
+              firebase?.closeSession(id);
+              setSessionState(undefined);
+            },
+          },
+          {
+            label: 'No',
+            onClick: () => {},
+          },
+        ],
+      });
+      return;
+    }
     confirmAlert({
       title: 'Disconnect from Session',
       message:
@@ -100,10 +140,7 @@ const App = () => {
           label: 'Yes',
           onClick: () => {
             firebase?.unsubscribeFromSession(id);
-            setSessionState({
-              mySessionId: sessionState?.mySessionId,
-              spectatingSession: undefined,
-            });
+            setSessionState(undefined);
           },
         },
         {
@@ -128,15 +165,16 @@ const App = () => {
   const subscribeToSession = (session: Session) => {
     if (!session?.id) return;
     firebase?.subscribeToSession(session.id, handleSessionChange);
-    setSessionState({
-      mySessionId: undefined,
-      spectatingSession: session,
-    });
+    setSessionState(new SessionState(undefined, session));
   };
 
   const hash = getHash(responseState[0]);
+  const thankYou = useRef<HTMLDivElement>(null);
   const hashExp = new RegExp('^A*$');
   const isEmpty = !hashExp || hashExp.test(hash);
+  const isComplete = mapper
+    .flattenQuestionGroups(responseState[0])
+    .every((q) => q.confidence !== undefined);
   const url = getHashUrl(hash);
   const tweetUrl =
     'https://twitter.com/intent/tweet?text=' +
@@ -148,10 +186,7 @@ const App = () => {
   const handleSessionStarted = (sessionId: string) => {
     debugger;
     firebase?.createSession(sessionId, responseState);
-    setSessionState({
-      mySessionId: sessionId,
-      spectatingSession: undefined,
-    });
+    setSessionState(new SessionState(sessionId, undefined));
   };
 
   return (
@@ -180,17 +215,11 @@ const App = () => {
               tweetUrl={tweetUrl}
             />
           ) : null}
+          <SessionStatus
+            sessionState={sessionState}
+            onDisconnect={unsubscribeFromSession}
+          />
         </div>
-        {isSpectator && (
-          <div>
-            <button
-              className="btn btn-warning"
-              onClick={unsubscribeFromSession}
-            >
-              Disconnect
-            </button>
-          </div>
-        )}
         <Questionnaire
           questionGroups={responseState[0]}
           lastResponse={responseState[1]}
@@ -199,6 +228,14 @@ const App = () => {
           showChanges={showChanges}
           handleSelection={handleResponse}
         />
+        {isComplete ? (
+          <div
+            ref={thankYou}
+            className="jumbotron text-center text-uppercase difference"
+          >
+            <h2>Thanks for completing the questionnaire!</h2>
+          </div>
+        ) : null}
       </div>
     </div>
   );
