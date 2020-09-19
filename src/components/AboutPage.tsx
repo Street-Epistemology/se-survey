@@ -1,20 +1,20 @@
 import React from 'react';
 import logo from '../images/se-logo-color.png';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const AboutPage = () => {
-  const history = useHistory();
   return (
     <div className="container fluid">
       <div className="jumbotron">
         <div className="container">
           <div className="col-md-auto text-center">
-            <img
-              src={logo}
-              className="logo m-4 col-sm"
-              alt="logo"
-              onClick={() => history.push('/')}
-            />
+            <Link to="/">
+              <img
+                src={logo}
+                className="logo m-4 col-sm"
+                alt="logo"
+              />
+            </Link>
           </div>
           <div className="col align-middle text-center">
             <h1 className="display-4 difference">
@@ -31,7 +31,7 @@ export const AboutPage = () => {
         used to arrive at their deeply-held beliefs. It aims to break down
         barriers that people encounter when talking about their cherished
         beliefs. Find out more at the official{' '}
-        <a href={'https://streetepistemology.com/'}>
+        <a href="https://streetepistemology.com/">
           Street Epistemology Webiste
         </a>
         !
