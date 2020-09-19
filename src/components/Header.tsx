@@ -5,7 +5,7 @@ export const Header = () => {
   return (
     <div className="row align-items-center">
       <div className="col-md-auto text-center">
-        <a className="col-sm" href={'https://streetepistemology.com/'}>
+        <a className="col-sm" href="https://streetepistemology.com/">
           <img src={logo} className="logo m-4" alt="logo" />
         </a>
       </div>
