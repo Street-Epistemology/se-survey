@@ -20,3 +20,36 @@ export interface Session {
   survey: string;
   lastQuestionIndex: number | null;
 }
+
+export type SessionType = 'hosting' | 'spectating';
+
+export class SessionState {
+  mySessionId: string | undefined;
+  spectatingSession: Session | undefined;
+  constructor(
+    mySessionId: string | undefined,
+    spectatingSession: Session | undefined
+  ) {
+    this.mySessionId = mySessionId;
+    this.spectatingSession = spectatingSession;
+  }
+  type(): SessionType {
+    return this.mySessionId === undefined ? 'hosting' : 'spectating';
+  }
+  get isHosting() {
+    return this.mySessionId !== undefined;
+  }
+  get isSpectating() {
+    return this.spectatingSession !== undefined;
+  }
+  get sessionId(): string | undefined {
+    if (this.mySessionId) {
+      return this.mySessionId;
+    }
+    if (this.spectatingSession?.id) {
+      return this.spectatingSession?.id;
+    }
+
+    return undefined;
+  }
+}
