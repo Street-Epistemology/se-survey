@@ -1,5 +1,5 @@
 import { QuestionGroup, QuestionResponse, Session } from './DataTypes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Router from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import { mapHash, getHash } from './utils/Hasher';
@@ -15,6 +15,11 @@ import * as mapper from './utils/mapper';
 
 type TParams = { id?: string | undefined };
 
+interface SessionState {
+  mySessionId: string | undefined;
+  spectatingSession: Session | undefined;
+}
+
 const App = () => {
   const firebase = React.useContext(FirebaseContext);
   const match: Router.match<TParams> = Router.useRouteMatch();
@@ -26,17 +31,18 @@ const App = () => {
   );
 
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
-  const [session, setSession] = useState<Session | null>(null);
+  const [sessionState, setSessionState] = useState<SessionState>();
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
-  const [state, setState] = useState<
+  const [responseState, setResponseState] = useState<
     [QuestionGroup[], QuestionResponse | null]
   >([questionGroupsFromHash, null]);
 
-  const inSession = session !== null;
+  const isSpectator =
+    sessionState !== undefined && sessionState.spectatingSession !== undefined;
 
-  const handleSelection = (response: QuestionResponse) => {
-    if (inSession) return;
-    let newGroups = [...state[0]];
+  const handleResponse = (response: QuestionResponse) => {
+    if (isSpectator) return;
+    let newGroups = [...responseState[0]];
     for (let group of newGroups) {
       for (let question of group.questions) {
         if (question.question === response.question)
@@ -44,7 +50,13 @@ const App = () => {
       }
     }
 
-    setState([newGroups, { ...response } as QuestionResponse]);
+    const newState: [QuestionGroup[], QuestionResponse] = [
+      newGroups,
+      { ...response } as QuestionResponse,
+    ];
+    if (sessionState !== undefined && sessionState.mySessionId !== undefined)
+      firebase?.updateSession(sessionState.mySessionId, newState);
+    setResponseState(newState);
   };
 
   const handleReset = () => {
@@ -55,7 +67,7 @@ const App = () => {
         {
           label: 'Yes',
           onClick: () => {
-            setState([loadData(), null]);
+            setResponseState([loadData(), null]);
             hist.push('/');
           },
         },
@@ -73,20 +85,21 @@ const App = () => {
   };
 
   const unsubscribeFromSession = () => {
+    const id = sessionState?.spectatingSession?.id;
+    if (!id) return;
     confirmAlert({
       title: 'Disconnect from Session',
       message:
-        'Are you sure you want to disconnect from the session "' +
-        session?.name +
-        '"?',
+        'Are you sure you want to disconnect from the session "' + id + '"?',
       buttons: [
         {
           label: 'Yes',
           onClick: () => {
-            if (!session?.id) return;
-            firebase?.unsubscribeFromSession(session.id);
-
-            setSession(null);
+            firebase?.unsubscribeFromSession(id);
+            setSessionState({
+              mySessionId: sessionState?.mySessionId,
+              spectatingSession: undefined,
+            });
           },
         },
         {
@@ -102,19 +115,22 @@ const App = () => {
     const responses = mapper.flattenQuestionGroups(groups);
     const index = session.lastQuestionIndex;
     let changedResponse: QuestionResponse | null = null;
-    if (index)
+    if (index !== null)
       changedResponse = index < responses.length ? responses[index] : null;
 
-    setState([groups, { ...changedResponse } as QuestionResponse]);
+    setResponseState([groups, { ...changedResponse } as QuestionResponse]);
   };
 
   const subscribeToSession = (session: Session) => {
     if (!session?.id) return;
     firebase?.subscribeToSession(session.id, handleSessionChange);
-    setSession(session);
+    setSessionState({
+      mySessionId: undefined,
+      spectatingSession: session,
+    });
   };
 
-  const hash = getHash(state[0]);
+  const hash = getHash(responseState[0]);
   const hashExp = new RegExp('^A*$');
   const isEmpty = !hashExp || hashExp.test(hash);
   const url = getHashUrl(hash);
@@ -125,15 +141,25 @@ const App = () => {
         url
     );
 
+  const handleSessionStarted = (sessionId: string) => {
+    debugger;
+    firebase?.createSession(sessionId, responseState);
+    setSessionState({
+      mySessionId: sessionId,
+      spectatingSession: undefined,
+    });
+  };
+
   return (
     <div className="App">
       <Menu
         useEmoji={useEmoji}
         selectedSymbol={tickSymbol}
-        inSession={inSession}
+        inSession={isSpectator}
         onUseEmojiToggled={setUseEmoji}
         onSymbolSelected={setTickSymbol}
         onSessionSelected={subscribeToSession}
+        onSessionStarted={handleSessionStarted}
       />
 
       <div className="container fluid">
@@ -142,14 +168,14 @@ const App = () => {
           {!isEmpty ? (
             <ShareInfo
               hash={hash}
-              showReset={!inSession}
+              showReset={!isSpectator}
               onCopy={handleCopy}
               onReset={handleReset}
               tweetUrl={tweetUrl}
             />
           ) : null}
         </div>
-        {inSession && (
+        {isSpectator && (
           <div>
             <button
               className="btn btn-warning"
@@ -160,11 +186,11 @@ const App = () => {
           </div>
         )}
         <Questionnaire
-          questionGroups={state[0]}
-          lastResponse={state[1]}
+          questionGroups={responseState[0]}
+          lastResponse={responseState[1]}
           tickSymbol={tickSymbol}
           useEmoji={useEmoji}
-          handleSelection={handleSelection}
+          handleSelection={handleResponse}
         />
       </div>
     </div>

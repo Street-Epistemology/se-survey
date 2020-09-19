@@ -4,6 +4,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 import Popup from 'reactjs-popup';
 import { SessionList } from './SessionList';
 import { Session } from '../DataTypes';
+import { CreateSession } from './CreateSession';
 
 export interface MenuProps {
   useEmoji: boolean;
@@ -12,6 +13,7 @@ export interface MenuProps {
   onUseEmojiToggled: (args: boolean) => void;
   onSymbolSelected: (args: string) => void;
   onSessionSelected: (args: Session) => void;
+  onSessionStarted: (args: string) => void;
 }
 
 const symbols: string[] = ['✓', '✔', '✘', '❌', '✅', '★', '🎵', '🔴'];
@@ -23,6 +25,7 @@ const Menu: React.FC<MenuProps> = ({
   onUseEmojiToggled,
   onSymbolSelected,
   onSessionSelected,
+  onSessionStarted,
 }) => {
   return (
     <div className="overlay">
@@ -56,6 +59,27 @@ const Menu: React.FC<MenuProps> = ({
               <SessionList
                 onSessionSelected={(session) => {
                   onSessionSelected(session);
+                  close();
+                }}
+              />
+            )}
+          </Popup>
+          <Popup
+            trigger={() => (
+              <span className="dropdown-item pointer">Start Session</span>
+            )}
+            modal
+            nested
+          >
+            {(close: () => void) => (
+              <CreateSession
+                onConfirm={(sessionId) => {
+                  debugger;
+                  onSessionStarted(sessionId);
+                  close();
+                }}
+                onCancel={() => {
+                  debugger;
                   close();
                 }}
               />

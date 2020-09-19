@@ -1,7 +1,6 @@
 {
   "sessions": {
-    "0": {
-      "name": "mark-0130",
+    "mark-0130": {
       "created": "2020-04-23T18:25:43.511Z",
       "isActive": true,
       "survey": "default",
@@ -58,8 +57,7 @@
         null
       ]
     },
-    "1": {
-      "name": "jenny-0120",
+    "jenny-0120": {
       "created": "2020-08-23T18:25:43.511Z",
       "isActive": true,
       "survey": "default",

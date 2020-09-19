@@ -11,12 +11,11 @@ export interface QuestionGroup {
 }
 
 export interface Session {
-  id: number | null;
-  name: string;
+  id: string;
   created: Date;
   isActive: boolean;
   initialResponses: Array<Confidence | null>;
   responses: Array<Confidence | null>;
   survey: string;
-  lastQuestionIndex: number;
+  lastQuestionIndex: number | null;
 }

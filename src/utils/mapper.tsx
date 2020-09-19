@@ -8,11 +8,14 @@ export const mapSessionToQuestionGroups = (session: Session) => {
     const group = result[i];
     for (let j = 0; j < group.questions.length; j++) {
       const question = group.questions[j];
-      if (index <= session.responses.length) {
+      if (session.responses && index in session.responses) {
         question.confidence = session.responses[index] ?? undefined;
       }
 
-      if (index <= session.initialResponses.length) {
+      if (
+        session.initialResponses &&
+        index <= session.initialResponses.length
+      ) {
         // question.previousConfidence = session.responses[index] ?? undefined;
       }
 
@@ -31,4 +34,22 @@ export const flattenQuestionGroups = (input: QuestionGroup[]) => {
   return ([] as QuestionResponse[]).concat(
     ...input.map((group) => group.questions)
   );
+};
+
+export const mapStateToSerializableSession = (
+  input: [QuestionGroup[], QuestionResponse | null]
+) => {
+  const questions = flattenQuestionGroups(input[0]);
+  const responses = questions.map((q) => q.confidence ?? null);
+  const lastResponse = input[1];
+  const lastIndex = lastResponse
+    ? questions.indexOf(lastResponse)
+    : questions.length - 1;
+  return {
+    created: new Date().toISOString(),
+    isActive: true,
+    responses: responses,
+    survey: 'default',
+    lastQuestionIndex: lastIndex < 0 ? null : lastIndex,
+  };
 };
