@@ -25,7 +25,7 @@ export const CreateSession: React.FC<CreateSessionProps> = ({
     onConfirm(finalId);
   };
 
-  const isValid = id && /^[a-zA-Z0-9]*$/.test(id);
+  const isValid = id !== undefined && /^[a-zA-Z0-9]*$/.test(id);
   return (
     <div className="container fluid">
       <form onSubmit={handleSubmit}>
@@ -38,12 +38,12 @@ export const CreateSession: React.FC<CreateSessionProps> = ({
             name="id"
             onChange={handleIdChange}
           />
+          {!isValid ? (
+            <small className="form-text text-danger">
+              The name must not be empty and only contain numbers and letters.
+            </small>
+          ) : null}
         </div>
-        {!isValid ?? (
-          <div>
-            <p>The name may only contain numbers and letters.</p>
-          </div>
-        )}
         <button type="submit" className="btn btn-primary" disabled={!isValid}>
           Ok
         </button>
