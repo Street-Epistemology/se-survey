@@ -79,6 +79,10 @@ class Firebase {
     app.database().ref('sessions').child(id).set(session);
   }
 
+  closeSession(id: string) {
+    app.database().ref('sessions').child(id).child('isActive').set(false);
+  }
+
   addSessionSubscriber(id: string) {
     app
       .database()
