@@ -229,11 +229,10 @@ const App = () => {
           handleSelection={handleResponse}
         />
         {isComplete ? (
-          <div
-            ref={thankYou}
-            className="jumbotron text-center text-uppercase difference"
-          >
-            <h2>Thanks for completing the questionnaire!</h2>
+          <div ref={thankYou} className="jumbotron">
+            <h2 className="display-4 difference  text-center text-uppercase">
+              Thanks for completing the questionnaire!
+            </h2>
           </div>
         ) : null}
       </div>
