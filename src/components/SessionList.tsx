@@ -19,7 +19,7 @@ export const SessionList: React.FC<SessionListProps> = ({
         setSessions(results);
         setIsLoading(false);
       }),
-    []
+    [firebase]
   );
 
   return (
