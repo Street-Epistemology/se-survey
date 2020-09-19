@@ -12,11 +12,9 @@ export const mapSessionToQuestionGroups = (session: Session) => {
         question.confidence = session.responses[index] ?? undefined;
       }
 
-      if (
-        session.initialResponses &&
-        index <= session.initialResponses.length
-      ) {
-        // question.previousConfidence = session.responses[index] ?? undefined;
+      if (session.initialResponses && index in session.initialResponses) {
+        question.previousConfidence =
+          session.initialResponses[index] ?? undefined;
       }
 
       index++;
@@ -41,6 +39,7 @@ export const mapStateToSerializableSession = (
 ) => {
   const questions = flattenQuestionGroups(input[0]);
   const responses = questions.map((q) => q.confidence ?? null);
+  const initialResponses = questions.map((q) => q.previousConfidence ?? null);
   const lastResponse = input[1];
   const lastIndex = lastResponse
     ? questions.indexOf(lastResponse)
@@ -49,6 +48,7 @@ export const mapStateToSerializableSession = (
     created: new Date().toISOString(),
     isActive: true,
     responses: responses,
+    initialResponses: initialResponses,
     survey: 'default',
     lastQuestionIndex: lastIndex < 0 ? null : lastIndex,
   };
