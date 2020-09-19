@@ -6,6 +6,7 @@ import { getHashUrl } from '../utils/UrlHelper';
 
 interface ShareInfoProps {
   hash: string;
+  showReset: boolean;
   onCopy: () => void;
   onReset: () => void;
   tweetUrl: string;
@@ -13,6 +14,7 @@ interface ShareInfoProps {
 
 const ShareInfo: React.FC<ShareInfoProps> = ({
   hash,
+  showReset,
   onCopy,
   onReset,
   tweetUrl,
@@ -33,6 +35,7 @@ const ShareInfo: React.FC<ShareInfoProps> = ({
       <button
         className="btn btn-primary d-inline align-middle ml-1 mt-2"
         onClick={onReset}
+        disabled={!showReset}
       >
         Reset
       </button>

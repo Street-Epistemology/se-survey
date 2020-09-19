@@ -6,6 +6,7 @@ import TextHeader from './TextHeader';
 
 interface QuestionnaireProps {
   questionGroups: QuestionGroup[];
+  lastResponse: QuestionResponse | null;
   tickSymbol: string;
   useEmoji?: boolean;
   showChanges?: boolean;
@@ -14,6 +15,7 @@ interface QuestionnaireProps {
 
 export const Questionnaire: React.FC<QuestionnaireProps> = ({
   questionGroups,
+  lastResponse,
   tickSymbol,
   useEmoji,
   showChanges,
@@ -37,6 +39,10 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({
                 <Question
                   key={question.question}
                   tickSymbol={tickSymbol}
+                  isActive={
+                    lastResponse !== null &&
+                    lastResponse.question === question.question
+                  }
                   response={question}
                   questionNo={lineNo}
                   showChanges={showChanges}

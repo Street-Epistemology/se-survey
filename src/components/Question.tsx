@@ -6,6 +6,7 @@ export interface QuestionProps {
   response: QuestionResponse;
   tickSymbol: string;
   questionNo: number | undefined;
+  isActive?: boolean;
   showChanges?: boolean;
   callback: (response: QuestionResponse) => void;
 }
@@ -13,6 +14,7 @@ export interface QuestionProps {
 export const Question: React.FC<QuestionProps> = ({
   response,
   tickSymbol,
+  isActive,
   questionNo,
   showChanges,
   callback,
@@ -46,7 +48,7 @@ export const Question: React.FC<QuestionProps> = ({
     );
   });
   return (
-    <tr>
+    <tr className={isActive ? 'table-primary' : ''}>
       <td className="scale-text">{questionNo + '. ' + response.question}</td>
       {buttons}
     </tr>
