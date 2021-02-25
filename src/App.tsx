@@ -19,7 +19,7 @@ import { loadData } from './utils/dataHelper';
 import * as mapper from './utils/mapper';
 import SessionStatus from './components/SessionStatus';
 
-type TParams = { id?: string | undefined };
+type TParams = { hash?: string | undefined };
 
 const App = () => {
   const firebase = React.useContext(FirebaseContext);
@@ -27,7 +27,7 @@ const App = () => {
   const hist = Router.useHistory();
 
   const questionGroupsFromHash = mapHash(
-    match.params.id,
+    match.params.hash,
     dataHelper.loadData()
   );
 
@@ -53,7 +53,7 @@ const App = () => {
   const [useEmoji, setUseEmoji] = useState<boolean>(true);
   const [sessionState, setSessionState] = useState<SessionState>();
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
-  const [showChanges, setShowChanges] = useState<boolean>(true);
+  const [showChanges, setShowChanges] = useState<boolean>(false);
   const [responseState, setResponseState] = useState<
     [QuestionGroup[], QuestionResponse | null]
   >([questionGroupsFromHash, null]);

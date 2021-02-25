@@ -32,7 +32,7 @@ export const AboutPage = () => {
         barriers that people encounter when talking about their cherished
         beliefs. Find out more at the official{' '}
         <a href="https://streetepistemology.com/">
-          Street Epistemology Webiste
+          Street Epistemology Website
         </a>
         !
         <br />
@@ -97,6 +97,11 @@ export const AboutPage = () => {
           only thing linking the session back to you is the name you give it. So
           be creative and use a name that no one can tie back to you.
         </p>
+        <Link to="/dashboard">Questionnaire Dashboard</Link>
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   );

@@ -10,20 +10,22 @@ import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
 import Firebase, { FirebaseContext } from './firebase';
 import AboutPage from './components/AboutPage';
+import ScrollToTop from './components/ScrollToTop';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
     <React.StrictMode>
       <Router>
+        <ScrollToTop />
         <Switch>
-        <Route path="/about">
-          <AboutPage />
-        </Route>
-          <Route path="/:id">
+          <Route path="/dashboard">
+            <App />
+          </Route>
+          <Route path="/:hash">
             <App />
           </Route>
           <Route path="/">
-            <App />
+            <AboutPage />
           </Route>
         </Switch>
       </Router>
