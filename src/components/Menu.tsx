@@ -52,7 +52,7 @@ const Menu: React.FC<MenuProps> = ({
                 className="mr-2"
                 type="checkbox"
                 checked={useEmoji}
-                onClick={() => onUseEmojiToggled(!useEmoji)}
+                onChange={() => onUseEmojiToggled(!useEmoji)}
               />
               Use Emoji
             </label>
@@ -63,7 +63,7 @@ const Menu: React.FC<MenuProps> = ({
                 className="mr-2"
                 type="checkbox"
                 checked={showChanges}
-                onClick={() => onShowChangesToggled(!showChanges)}
+                onChange={() => onShowChangesToggled(!showChanges)}
               />
               Show Changes
             </label>
