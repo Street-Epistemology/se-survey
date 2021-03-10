@@ -4,21 +4,14 @@ import 'firebase/analytics';
 import { QuestionGroup, QuestionResponse, Session } from '../DataTypes';
 import * as mapper from '../utils/mapper';
 
-const config = {
-  apiKey: 'AIzaSyByqJZKz4QQ_4ymFSSUATIOkIErLiVkVtQ',
-  authDomain: 'se-survey.firebaseapp.com',
-  databaseURL: 'https://se-survey.firebaseio.com',
-  projectId: 'se-survey',
-  storageBucket: 'se-survey.appspot.com',
-  messagingSenderId: '589870623313',
-  appId: '1:589870623313:web:275da34511af68d7e26670',
-  measurementId: 'G-ZPSR252PER',
-};
-
 class Firebase {
   constructor() {
-    app.initializeApp(config);
-    app.analytics();
+    fetch('/__/firebase/init.json').then(async response => {
+      app.initializeApp(await response.json());
+      app.analytics();
+    }).catch(e => {
+      debugger;
+    });
   }
   database() {
     return app.database();
