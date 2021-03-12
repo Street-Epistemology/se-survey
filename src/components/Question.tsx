@@ -20,7 +20,6 @@ export const Question: React.FC<QuestionProps> = ({
   callback,
 }) => {
   const buttons = ConfidenceLevels.map((confidence) => {
-    const isSelected = response.confidence === confidence;
     const value = {
       previousConfidence: response.confidence,
       confidence: confidence,
@@ -29,7 +28,7 @@ export const Question: React.FC<QuestionProps> = ({
     return (
       <td
         key={confidence}
-        onClick={() => (isSelected ? null : callback(value))}
+        onClick={() => callback(value)}
         className="td-check m-0 p-0 align-middle"
       >
         <div className="p-0">

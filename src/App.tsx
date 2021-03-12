@@ -3,43 +3,32 @@ import {
   QuestionResponse,
   Session,
   SessionState,
+  Survey,
 } from './DataTypes';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as Router from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert';
-import { mapHash, getHash } from './utils/Hasher';
 import Header from './components/Header';
 import Menu from './components/Menu';
 import Questionnaire from './components/Questionnaire';
 import ShareInfo from './components/ShareInfo';
 import { getHashUrl } from './utils/UrlHelper';
-import * as dataHelper from './utils/dataHelper';
 import { FirebaseContext } from './firebase';
-import { loadData } from './utils/dataHelper';
 import * as mapper from './utils/mapper';
-import SessionStatus from './components/SessionStatus';
 
-type TParams = { hash?: string | undefined };
+interface ParamTypes {
+  lang: string,
+  surveyID: string,
+  sessionID: string
+}
 
 const App = () => {
   const firebase = React.useContext(FirebaseContext);
-  const match: Router.match<TParams> = Router.useRouteMatch();
-  const hist = Router.useHistory();
+  const { lang, surveyID, sessionID } = Router.useParams<ParamTypes>();
 
-  const questionGroupsFromHash = mapHash(
-    match.params.hash,
-    dataHelper.loadData()
-  );
+  const responsesID = `${lang}/${surveyID}/${sessionID}`;
 
   const handleUnload = (event: BeforeUnloadEvent) => {
-    const id = sessionState?.sessionId;
-    if (!id) return;
-    if (sessionState?.isHosting) {
-      firebase?.closeSession(id);
-    }
-    if (sessionState?.isSpectating) {
-      firebase?.unsubscribeFromSession(id);
-    }
+    firebase?.unsubscribeFromSession(responsesID);
   };
 
   useEffect(() => {
@@ -50,25 +39,34 @@ const App = () => {
     return () => window.removeEventListener('beforeunload', handleUnload);
   });
 
-  const [useEmoji, setUseEmoji] = useState<boolean>(true);
+  const [useEmoji, setUseEmoji] = useState<boolean>(false);
   const [sessionState, setSessionState] = useState<SessionState>();
   const [tickSymbol, setTickSymbol] = useState<string>('✓');
   const [showChanges, setShowChanges] = useState<boolean>(false);
+  const [survey, setSurvey] = useState<Survey>({ groups: [], surveyTitle: ''});
   const [responseState, setResponseState] = useState<
     [QuestionGroup[], QuestionResponse | null]
-  >([questionGroupsFromHash, null]);
+  >([[], null]);
+
+  useEffect(() => {
+    firebase?.getSurvey((survey) => {
+      setSurvey(survey);
+    }, surveyID);
+  }, [firebase, surveyID]);
 
   const isSpectator =
     sessionState !== undefined && sessionState.spectatingSession !== undefined;
 
   const handleResponse = (response: QuestionResponse) => {
-    if (isSpectator) return;
-    let newGroups = [...responseState[0]];
+    if (isSpectator || !response) return;
+    let newGroups = [...survey.groups];
     for (let group of newGroups) {
-      for (let question of group.questions) {
-        if (question.question === response.question) {
-          question.confidence = response.confidence;
-          question.previousConfidence = response.previousConfidence;
+      if (group?.questions) {
+        for (let question of group.questions) {
+          if (question?.question === response?.question) {
+            question.confidence = response.confidence;
+            question.previousConfidence = response.previousConfidence;
+          }
         }
       }
     }
@@ -83,76 +81,14 @@ const App = () => {
     setResponseState(newState);
   };
 
-  const handleReset = () => {
-    confirmAlert({
-      title: 'Reset',
-      message: 'Are you sure you want to clear all your answers?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => {
-            setResponseState([loadData(), null]);
-            hist.push('/');
-          },
-        },
-        {
-          label: 'No',
-          onClick: () => {},
-        },
-      ],
-    });
-  };
-
   const handleCopy = () => {
     const copy = require('clipboard-copy');
     copy(url);
   };
 
-  const unsubscribeFromSession = () => {
-    const id = sessionState?.sessionId;
-    if (!id) return;
-    if (sessionState?.isHosting) {
-      confirmAlert({
-        title: 'Disconnect from Session',
-        message: 'Are you sure you want to stop broadcasting your session?',
-        buttons: [
-          {
-            label: 'Yes',
-            onClick: () => {
-              firebase?.closeSession(id);
-              setSessionState(undefined);
-            },
-          },
-          {
-            label: 'No',
-            onClick: () => {},
-          },
-        ],
-      });
-      return;
-    }
-    confirmAlert({
-      title: 'Disconnect from Session',
-      message:
-        'Are you sure you want to disconnect from the session "' + id + '"?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => {
-            firebase?.unsubscribeFromSession(id);
-            setSessionState(undefined);
-          },
-        },
-        {
-          label: 'No',
-          onClick: () => {},
-        },
-      ],
-    });
-  };
-
-  const handleSessionChange = (session: Session) => {
-    const groups = mapper.mapSessionToQuestionGroups(session);
+  const handleSessionChange = useCallback((session: Session) => {
+    console.log('sessionChange', session);
+    const groups = mapper.mapSessionToQuestionGroups(survey.groups, session);
     const responses = mapper.flattenQuestionGroups(groups);
     const index = session.lastQuestionIndex;
     let changedResponse: QuestionResponse | null = null;
@@ -160,22 +96,16 @@ const App = () => {
       changedResponse = index < responses.length ? responses[index] : null;
 
     setResponseState([groups, { ...changedResponse } as QuestionResponse]);
-  };
+  }, [survey.groups]);
 
-  const subscribeToSession = (session: Session) => {
-    if (!session?.id) return;
-    firebase?.subscribeToSession(session.id, handleSessionChange);
-    setSessionState(new SessionState(undefined, session));
-  };
+  useEffect(() => {
+    setSessionState(new SessionState(responsesID, undefined));
+    firebase?.subscribeToSession(responsesID, handleSessionChange);
+  }, [responsesID, firebase, handleSessionChange]);
 
-  const hash = getHash(responseState[0]);
   const thankYou = useRef<HTMLDivElement>(null);
-  const hashExp = new RegExp('^A*$');
-  const isEmpty = !hashExp || hashExp.test(hash);
-  const isComplete = mapper
-    .flattenQuestionGroups(responseState[0])
-    .every((q) => q.confidence !== undefined);
-  const url = getHashUrl(hash);
+  const isComplete = false;
+  const url = getHashUrl(responsesID);
   const tweetUrl =
     'https://twitter.com/intent/tweet?text=' +
     encodeURI(
@@ -183,45 +113,28 @@ const App = () => {
         url
     );
 
-  const handleSessionStarted = (sessionId: string) => {
-    debugger;
-    firebase?.createSession(sessionId, responseState);
-    setSessionState(new SessionState(sessionId, undefined));
-  };
-
   return (
     <div className="App">
       <Menu
         useEmoji={useEmoji}
         selectedSymbol={tickSymbol}
-        inSession={isSpectator}
         showChanges={showChanges}
         onUseEmojiToggled={setUseEmoji}
         onShowChangesToggled={setShowChanges}
         onSymbolSelected={setTickSymbol}
-        onSessionSelected={subscribeToSession}
-        onSessionStarted={handleSessionStarted}
       />
 
       <div className="container fluid">
         <div>
-          <Header />
-          {!isEmpty ? (
-            <ShareInfo
-              hash={hash}
-              showReset={!isSpectator}
-              onCopy={handleCopy}
-              onReset={handleReset}
-              tweetUrl={tweetUrl}
-            />
-          ) : null}
-          <SessionStatus
-            sessionState={sessionState}
-            onDisconnect={unsubscribeFromSession}
+          <Header title={survey.surveyTitle} />
+          <ShareInfo
+            hash={responsesID}
+            onCopy={handleCopy}
+            tweetUrl={tweetUrl}
           />
         </div>
         <Questionnaire
-          questionGroups={responseState[0]}
+          questionGroups={survey.groups}
           lastResponse={responseState[1]}
           tickSymbol={tickSymbol}
           useEmoji={useEmoji}

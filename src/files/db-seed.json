@@ -117,8 +117,9 @@
   },
   "surveys": {
     "default": {
+      "surveyTitle": "How do we know what we know?",
       "groups": {
-        "1": {
+        "0": {
           "groupName": "What is Truth?",
           "questions": [
             {
@@ -141,7 +142,7 @@
             }
           ]
         },
-        "2": {
+        "1": {
           "groupName": "How does Belief Work?",
           "questions": [
             {
@@ -164,7 +165,7 @@
             }
           ]
         },
-        "3": {
+        "2": {
           "groupName": "When should we believe?",
           "questions": [
             {
@@ -187,7 +188,7 @@
             }
           ]
         },
-        "4": {
+        "3": {
           "groupName": "When should we change our minds?",
           "questions": [
             {
@@ -211,6 +212,18 @@
           ]
         }
       }
+    }
+  },
+  "surveysMeta": {
+    "surveyID": {
+      "name": "",
+      "title": "",
+      "url": ""
+    }
+  },
+  "users": {
+    "userID": {
+      "responses": ["en-GB/default/Y1234tms1234"]
     }
   }
 }

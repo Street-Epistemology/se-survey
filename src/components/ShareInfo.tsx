@@ -6,17 +6,13 @@ import { getHashUrl } from '../utils/UrlHelper';
 
 interface ShareInfoProps {
   hash: string;
-  showReset: boolean;
   onCopy: () => void;
-  onReset: () => void;
   tweetUrl: string;
 }
 
 const ShareInfo: React.FC<ShareInfoProps> = ({
   hash,
-  showReset,
   onCopy,
-  onReset,
   tweetUrl,
 }) => {
   return (
@@ -31,13 +27,6 @@ const ShareInfo: React.FC<ShareInfoProps> = ({
         onClick={onCopy}
       >
         <FontAwesomeIcon icon={faCopy} />
-      </button>
-      <button
-        className="btn btn-primary d-inline align-middle ml-1 mt-2"
-        onClick={onReset}
-        disabled={!showReset}
-      >
-        Reset
       </button>
       <button
         className="btn btn-primary d-inline align-middle ml-1 mt-2 mt-twitter-share-button"

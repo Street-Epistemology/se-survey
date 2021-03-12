@@ -1,11 +1,9 @@
 import { QuestionGroup, QuestionResponse, Session } from '../DataTypes';
-import { loadData } from './dataHelper';
 
-export const mapSessionToQuestionGroups = (session: Session) => {
-  const result = loadData();
+export const mapSessionToQuestionGroups = (groups: QuestionGroup[], session: Session) => {
   let index = 0;
-  for (let i = 0; i < result.length; i++) {
-    const group = result[i];
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
     for (let j = 0; j < group.questions.length; j++) {
       const question = group.questions[j];
       if (session.responses && index in session.responses) {
@@ -21,7 +19,7 @@ export const mapSessionToQuestionGroups = (session: Session) => {
     }
   }
 
-  return result;
+  return groups;
 };
 
 export const mapAnyToSession = (input: any) => {

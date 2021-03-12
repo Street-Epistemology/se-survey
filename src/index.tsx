@@ -9,8 +9,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.js';
 import Firebase, { FirebaseContext } from './firebase';
-import AboutPage from './components/AboutPage';
+import StartPage from './components/StartPage';
 import ScrollToTop from './components/ScrollToTop';
+import RedirectLanguage from './components/RedirectLanguage';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
@@ -18,14 +19,14 @@ ReactDOM.render(
       <Router>
         <ScrollToTop />
         <Switch>
-          <Route path="/dashboard">
+          <Route path="/:lang/:surveyID/:sessionID">
             <App />
           </Route>
-          <Route path="/:hash">
-            <App />
+          <Route path="/:lang">
+            <StartPage />
           </Route>
           <Route path="/">
-            <AboutPage />
+            <RedirectLanguage />
           </Route>
         </Switch>
       </Router>

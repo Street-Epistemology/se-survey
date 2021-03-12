@@ -11,6 +11,11 @@ export interface QuestionGroup {
   groupName: string;
 }
 
+export interface Survey {
+  groups: QuestionGroup[];
+  surveyTitle: string;
+}
+
 export interface Session {
   id: string;
   created: Date;

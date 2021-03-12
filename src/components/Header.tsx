@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../images/se-logo-color.png';
 import { Link } from 'react-router-dom';
 
-export const Header = () => {
+export const Header = ({ title }: { title: string }) => {
   return (
     <div className="row align-items-center">
       <div className="col-md-auto text-center">
@@ -12,7 +12,7 @@ export const Header = () => {
       </div>
       <div className="col align-middle text-center">
         <h3 className="col-sm text-uppercase w-100">
-          How do we know what we know?
+          {title}
         </h3>
       </div>
     </div>

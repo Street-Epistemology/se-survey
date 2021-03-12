@@ -1,6 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/database';
-import { QuestionGroup, QuestionResponse, Session } from '../DataTypes';
+import { QuestionGroup, QuestionResponse, Session, Survey } from '../DataTypes';
 import * as mapper from '../utils/mapper';
 
 const config = {
@@ -19,6 +19,19 @@ class Firebase {
   }
   database() {
     return app.database();
+  }
+
+  getSurvey(
+    callback: (survey: Survey) => any,
+    surveyId: string
+  ): void {
+    app
+      .database()
+      .ref(`surveys/${surveyId}`)
+      .on('value', snapshot => {
+        const val = snapshot.val();
+        callback(val);
+      })
   }
 
   subscribeToSessions(
