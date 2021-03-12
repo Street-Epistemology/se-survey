@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Hosting
+
+This project is meant to be hosted using [Firebase](https://firebase.google.com).
+
+## Local configuration
+
+To connect to the Firebase Realtime Database from localhost, add the Firebase SDK snippet config from Firebase [Project settings](https://console.firebase.google.com/project/se-survey/settings/general) to `/public/__/firebase/init.json`.
+
 ## Available Scripts
 
 In the project directory, you can run:

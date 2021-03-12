@@ -1,21 +1,17 @@
 import app from 'firebase/app';
 import 'firebase/database';
+import 'firebase/analytics';
 import { QuestionGroup, QuestionResponse, Session, Survey } from '../DataTypes';
 import * as mapper from '../utils/mapper';
 
-const config = {
-  apiKey: '',
-  authDomain: 'se-survey.firebaseapp.com',
-  databaseURL: 'https://se-survey.firebaseio.com',
-  projectId: 'se-survey',
-  storageBucket: 'se-survey.appspot.com',
-  messagingSenderId: '',
-  appId: '',
-};
-
 class Firebase {
   constructor() {
-    app.initializeApp(config);
+    fetch('/__/firebase/init.json').then(async response => {
+      app.initializeApp(await response.json());
+      app.analytics();
+    }).catch(e => {
+      debugger;
+    });
   }
   database() {
     return app.database();
