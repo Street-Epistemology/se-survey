@@ -1,55 +1,114 @@
-import { Confidence } from './utils/Confidence';
-
-export interface QuestionResponse {
-  previousConfidence: Confidence | undefined;
-  confidence: Confidence | undefined;
+export interface Question {
   question: string;
 }
 
 export interface QuestionGroup {
-  questions: QuestionResponse[];
+  scaleTitle: string;
+  questions: Question[];
   groupName: string;
 }
 
-export interface Session {
-  id: string;
-  created: Date;
-  isActive: boolean;
-  initialResponses: Array<Confidence | null>;
-  responses: Array<Confidence | null>;
-  survey: string;
-  lastQuestionIndex: number | null;
+export interface Survey {
+  groups: QuestionGroup[];
+  surveyTitle: string;
+}
+
+export type AnswerValue = string | number;
+
+export interface Answer {
+  questionKey: string;
+  sectionKey: string;
+  value: number;
+}
+
+export interface ServerAnswer {
+  value: number;
+}
+
+export interface ServerSession {
+  nickname?: string;
+  filling: boolean;
+  answers?: {
+    [sectionKey: string]: {
+      [questionKey: string]: {
+        [answerKey: string]: ServerAnswer;
+      };
+    };
+  };
+  answer?: {
+    [sectionKey: string]: {
+      [questionKey: string]: ServerAnswer;
+    };
+  };
+  lastQuestion?: {
+    sectionKey: string;
+    questionKey: string;
+  };
+}
+
+export interface ServerRoom {
+  sessions: {
+    [sessionKey: string]: ServerSession;
+  };
+}
+
+export interface ServerRooms {
+  rooms: {
+    [languageKey: string]: {
+      [surveyKey: string]: {
+        [roomKey: string]: ServerRoom;
+      };
+    };
+  };
+}
+
+export interface ServerQuestion {
+  text: string;
+  values: number[];
+}
+
+export interface ServerSection {
+  title: string;
+  answersTitle: string;
+  questions: {
+    [questionKey: string]: ServerQuestion;
+  };
+  lastQuestion?: string;
+}
+
+export interface ServerSurvey {
+  title?: string;
+  sections: {
+    [sectionKey: string]: ServerSection;
+  };
+}
+
+export interface ServerSurveys {
+  surveys: {
+    [languageKey: string]: {
+      [surveyKey: string]: ServerSurvey;
+    };
+  };
+}
+
+export interface RouteParamTypes {
+  lang: string;
+  surveyKey?: string;
+  roomKey?: string;
+  sessionKey?: string;
+}
+
+export interface AboutTypes {
+  description?: string;
+  instructions?: string[];
+  instructionsTitle?: string;
+  more?: string;
+  start?: string;
+  title?: string;
+}
+
+export interface Translations {
+  about: AboutTypes;
 }
 
 export type SessionType = 'hosting' | 'spectating';
-
-export class SessionState {
-  mySessionId: string | undefined;
-  spectatingSession: Session | undefined;
-  constructor(
-    mySessionId: string | undefined,
-    spectatingSession: Session | undefined
-  ) {
-    this.mySessionId = mySessionId;
-    this.spectatingSession = spectatingSession;
-  }
-  type(): SessionType {
-    return this.mySessionId === undefined ? 'hosting' : 'spectating';
-  }
-  get isHosting() {
-    return this.mySessionId !== undefined;
-  }
-  get isSpectating() {
-    return this.spectatingSession !== undefined;
-  }
-  get sessionId(): string | undefined {
-    if (this.mySessionId) {
-      return this.mySessionId;
-    }
-    if (this.spectatingSession?.id) {
-      return this.spectatingSession?.id;
-    }
-
-    return undefined;
-  }
-}

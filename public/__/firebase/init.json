@@ -1,0 +1,10 @@
+{
+    "apiKey": "AIzaSyByqJZKz4QQ_4ymFSSUATIOkIErLiVkVtQ",
+    "authDomain": "se-survey.firebaseapp.com",
+    "databaseURL": "https://se-survey.firebaseio.com",
+    "projectId": "se-survey",
+    "storageBucket": "se-survey.appspot.com",
+    "messagingSenderId": "589870623313",
+    "appId": "1:589870623313:web:275da34511af68d7e26670",
+    "measurementId": "G-ZPSR252PER"
+}

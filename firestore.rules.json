@@ -1,0 +1,30 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "sessions": {
+      ".read": true,
+      ".write": true
+    },
+    "surveys": {
+      ".write": false,
+      "$languageKey": {
+        ".read": true,
+        "$surveyKey": {
+          ".read": "auth != null || data.child('public').val() === true",
+          ".write": "root.child('languages').child($languageKey).exists()"
+        }
+      }
+    },
+    "languages": {
+      ".read": true
+    },
+    "translations": {
+      ".read": true
+    },
+    "rooms": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

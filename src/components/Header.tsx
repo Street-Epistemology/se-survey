@@ -1,21 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../images/se-logo-color.png';
 
-export const Header = () => {
+export default function Header({
+  title,
+}: {
+  title: string | undefined;
+}): JSX.Element {
   return (
     <div className="row align-items-center">
       <div className="col-md-auto text-center">
-        <a className="col-sm" href="https://streetepistemology.com/">
+        <Link className="col-sm" to="/">
           <img src={logo} className="logo m-4" alt="logo" />
-        </a>
+        </Link>
       </div>
       <div className="col align-middle text-center">
-        <h3 className="col-sm text-uppercase w-100">
-          How do we know what we know?
-        </h3>
+        <h3 className="col-sm text-uppercase w-100">{title}</h3>
       </div>
     </div>
   );
-};
-
-export default Header;
+}

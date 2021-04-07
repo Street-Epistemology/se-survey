@@ -2,24 +2,18 @@ import React from 'react';
 import logo from '../images/se-logo-color.png';
 import { Link } from 'react-router-dom';
 
-export const AboutPage = () => {
+export default function About(): JSX.Element {
   return (
     <div className="container fluid">
       <div className="jumbotron">
         <div className="container">
           <div className="col-md-auto text-center">
             <Link to="/">
-              <img
-                src={logo}
-                className="logo m-4 col-sm"
-                alt="logo"
-              />
+              <img src={logo} className="logo m-4 col-sm" alt="logo" />
             </Link>
           </div>
           <div className="col align-middle text-center">
-            <h1 className="display-4 difference">
-              Street Epistemology Questionnaire
-            </h1>
+            <h1 className="display-4 difference">Street Epistemology Survey</h1>
           </div>
         </div>
       </div>
@@ -32,7 +26,7 @@ export const AboutPage = () => {
         barriers that people encounter when talking about their cherished
         beliefs. Find out more at the official{' '}
         <a href="https://streetepistemology.com/">
-          Street Epistemology Webiste
+          Street Epistemology Website
         </a>
         !
         <br />
@@ -87,19 +81,11 @@ export const AboutPage = () => {
           questions can help you figure out if there are doors you left open
           letting those unwanted guests.
         </p>
-        <hr />
-        <h3>Is this data collected?</h3>
-        <p>
-          No! The information you enter here is not collected in any way. When
-          you create a session, the data is temporarily saved to allow other
-          users to access your session, but that data is immediately deleted
-          when you session ends or within 24 hours of your session starting. The
-          only thing linking the session back to you is the name you give it. So
-          be creative and use a name that no one can tie back to you.
-        </p>
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   );
-};
-
-export default AboutPage;
+}

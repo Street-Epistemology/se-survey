@@ -3,7 +3,6 @@
     "mark-0130": {
       "created": "2020-04-23T18:25:43.511Z",
       "isActive": true,
-      "survey": "default",
       "responses": [
         null,
         null,
@@ -60,7 +59,6 @@
     "jenny-0120": {
       "created": "2020-08-23T18:25:43.511Z",
       "isActive": true,
-      "survey": "default",
       "responses": [
         1,
         1,
@@ -115,10 +113,17 @@
       ]
     }
   },
+  "rooms": {
+    "-AISIFasdfAsdfASDFasd": {
+      "created": "2021-03-23T12:12:12.123Z",
+      "title": "maybe"
+    }
+  },
   "surveys": {
     "default": {
+      "surveyTitle": "How do we know what we know?",
       "groups": {
-        "1": {
+        "0": {
           "groupName": "What is Truth?",
           "questions": [
             {
@@ -141,7 +146,7 @@
             }
           ]
         },
-        "2": {
+        "1": {
           "groupName": "How does Belief Work?",
           "questions": [
             {
@@ -164,7 +169,7 @@
             }
           ]
         },
-        "3": {
+        "2": {
           "groupName": "When should we believe?",
           "questions": [
             {
@@ -187,7 +192,7 @@
             }
           ]
         },
-        "4": {
+        "3": {
           "groupName": "When should we change our minds?",
           "questions": [
             {
@@ -211,6 +216,115 @@
           ]
         }
       }
+    },
+    "nathan": {
+      "surveyTitle": "How do we know what we know?",
+      "groups": {
+        "0": {
+          "groupName": "What is Truth?",
+          "questions": [
+            {
+              "question": "A statement is true when it corresponds to reality."
+            },
+            {
+              "question": "We all share the same reality and only interpret it differently."
+            },
+            {
+              "question": "Truth depends on the opinions and beliefs of people."
+            },
+            {
+              "question": "People create words and define their meaning."
+            },
+            {
+              "question": "A statement is true if everyone agrees."
+            },
+            {
+              "question": "Strong belief, even without action, can change external reality."
+            }
+          ]
+        },
+        "1": {
+          "groupName": "How does Belief Work?",
+          "questions": [
+            {
+              "question": "Some beliefs should never be questioned."
+            },
+            {
+              "question": "Someone can be certain something is true yet still be mistaken."
+            },
+            {
+              "question": "A test that cannot identify a failure is a valid test."
+            },
+            {
+              "question": "If all members of a society share a belief, they are justified to hold that belief."
+            },
+            {
+              "question": "Believing something that is false feels just like believing something that is true."
+            },
+            {
+              "question": "Feelings are a reliable way to discover truth."
+            }
+          ]
+        },
+        "2": {
+          "groupName": "When should we believe?",
+          "questions": [
+            {
+              "question": "Believing something without evidence is admirable."
+            },
+            {
+              "question": "Without an explanation for something, any answer is better than no answer."
+            },
+            {
+              "question": "It is ok to accept something is true because it is comforting."
+            },
+            {
+              "question": "I give all claims the benefit of the doubt when I first encounter them."
+            },
+            {
+              "question": "Someone is justified in their beliefs until they are proven wrong."
+            },
+            {
+              "question": "The most important criteria for my beliefs is that they match reality."
+            }
+          ]
+        },
+        "3": {
+          "groupName": "When should we change our minds?",
+          "questions": [
+            {
+              "question": "I often investigate beliefs that do not match my own."
+            },
+            {
+              "question": "I am comfortable with saying: \"I don't know\"."
+            },
+            {
+              "question": "It is beneficial to find out when I am wrong about something."
+            },
+            {
+              "question": "I will abandon a belief if I discover reliable information that falsifies it."
+            },
+            {
+              "question": "The more unusual the statement, the stronger the evidence needs to be."
+            },
+            {
+              "question": "It is possible that some of my beliefs are not true"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "surveysMeta": {
+    "surveyKey": {
+      "name": "",
+      "title": "",
+      "url": ""
+    }
+  },
+  "users": {
+    "userID": {
+      "responses": ["en-GB/default/Y1234tms1234"]
     }
   }
 }
