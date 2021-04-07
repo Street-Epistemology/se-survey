@@ -1,3 +1,4 @@
-export const getBaseUrl = () =>
+export const getBaseUrl = (): string =>
   window.location.protocol + '//' + window.location.host;
-export const getHashUrl = (hash: string) => getBaseUrl() + '/' + hash;
+export const getFullUrl = (relativeURL: string): string =>
+  getBaseUrl() + '/' + relativeURL;

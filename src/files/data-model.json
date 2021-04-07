@@ -1,0 +1,64 @@
+{
+  "rooms": {
+    "$languageKey": {
+      "$surveyKey": {
+        "$roomKey": {
+          "created": "TIMESTAMP",
+          "sessions": {
+            "$sessionKey": {
+              "created": "TIMESTAMP",
+              "nickname": "",
+              "lastQuestion": {
+                "sectionKey": "$sctionKey",
+                "questionKey": "$questionKey"
+              },
+              "answers": {
+                "$sectionKey": {
+                  "$questionKey": {
+                    "$answerKey": {
+                      "created": "TIMESTAMP",
+                      "value": ""
+                    },
+                    "$answerKey2": {
+                      "created": "TIMESTAMP",
+                      "value": 2
+                    }
+                  }
+                }
+              },
+              "answer": {
+                "$sectionKey": {
+                  "$questionKey": {
+                    "created": "TIMESTAMP",
+                    "value": ""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "surveys": {
+    "$languageKey": {
+      "$surveyKey": {
+        "created": "TIMESTAMP",
+        "title": "",
+        "sections": {
+          "$sectionKey": {
+            "title": "",
+            "answersTitle": "",
+            "questions": {
+              "$questionKey": {
+                "text": "",
+                "type": "",
+                "values": []
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
