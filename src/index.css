@@ -54,7 +54,6 @@ img.logo {
   margin-bottom: 2rem;
   background-color: var(--bs-light);
   border-radius: 0.3rem;
-  background-image: url('./images/background_friends.jpg');
   background-size: cover;
 }
 
