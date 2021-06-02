@@ -13,8 +13,8 @@ export function StartRoom(): JSX.Element {
   const [error, setError] = useState('');
 
   async function createRoom(nickname: string) {
-    const { key: roomKey } = await db.push('/test_rooms');
-    const roomURI = `/test_rooms/${lang}/${surveyKey}/${roomKey}/sessions`;
+    const { key: roomKey } = await db.push('/rooms');
+    const roomURI = `/rooms/${lang}/${surveyKey}/${roomKey}/sessions`;
     const { key } = await db.push(roomURI);
     try {
       await db.set(`${roomURI}/${key}`, { nickname, filling: true });

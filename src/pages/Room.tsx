@@ -24,7 +24,7 @@ export default function Room(): JSX.Element {
   const { lang, roomKey, surveyKey } = Router.useParams<RouteParamTypes>();
 
   const roomURL = `${lang}/${surveyKey}/${roomKey}`;
-  const roomURI = `/test_rooms/${roomURL}`;
+  const roomURI = `/rooms/${roomURL}`;
 
   const sessionKey: string = getSessionKey({ lang, roomKey, surveyKey });
 
