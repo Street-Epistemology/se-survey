@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Router from 'react-router-dom';
 import copy from 'clipboard-copy';
 
@@ -18,17 +18,24 @@ import { getFullUrl } from '../utils/UrlHelper';
 import * as db from '../firebase';
 import FillForm from '../components/FillForm';
 import { getSessionKey, setSessionKey } from '../utils/sessionKey';
+import Splash from '../components/Splash';
 
 export default function Room(): JSX.Element {
   const { lang, roomKey, surveyKey } = Router.useParams<RouteParamTypes>();
 
   const roomURL = `${lang}/${surveyKey}/${roomKey}`;
-  const roomURI = `/rooms/${roomURL}`;
+  const roomURI = `/test_rooms/${roomURL}`;
 
   const sessionKey: string = getSessionKey({ lang, roomKey, surveyKey });
 
   const [room, setRoom] = useState<ServerRoom | undefined>();
   const [survey, setSurvey] = useState<ServerSurvey>({ sections: {} });
+  const [t, setTranslations] = useState<{ [key: string]: string }>({});
+  const [error, setError] = useState('');
+
+  useEffect(() => db.getOnOff(`/translations/${lang}`, setTranslations), [
+    lang,
+  ]);
 
   useEffect(() => db.getOnOff(`/surveys/${lang}/${surveyKey}`, setSurvey), [
     lang,
@@ -56,25 +63,34 @@ export default function Room(): JSX.Element {
   };
 
   const handleNickname = async (nickname: string) => {
-    if (!sessionKey) {
-      const sessionsURI = `${roomURI}/sessions`;
-      const { key } = await db.push(sessionsURI);
-      db.set(`${sessionsURI}/${key}`, { filling: true, nickname });
-      setSessionKey({ lang, surveyKey, roomKey, key });
-      return;
+    try {
+      if (!sessionKey) {
+        const sessionsURI = `${roomURI}/sessions`;
+        const { key } = await db.push(sessionsURI);
+        await db.set(`${sessionsURI}/${key}`, { filling: true, nickname });
+        setSessionKey({ lang, surveyKey, roomKey, key });
+        return;
+      }
+      await db.set(`${roomURI}/sessions/${sessionKey}/nickname`, nickname);
+    } catch (error) {
+      setError(error.toString().split(':').pop());
     }
-    db.set(`${roomURI}/sessions/${sessionKey}`, {
-      ...room?.sessions[sessionKey],
-      nickname,
-    });
+  };
+
+  const toggleRevealMyName = async () => {
+    if (!sessionKey) return;
+    db.set(
+      `${roomURI}/sessions/${sessionKey}/revealMyName`,
+      !room?.sessions[sessionKey]?.revealMyName
+    );
   };
 
   const toggleFilling = async () => {
     if (!sessionKey) return;
-    db.set(`${roomURI}/sessions/${sessionKey}`, {
-      ...room?.sessions[sessionKey],
-      filling: !room?.sessions[sessionKey]?.filling,
-    });
+    db.set(
+      `${roomURI}/sessions/${sessionKey}/filling`,
+      !room?.sessions[sessionKey]?.filling
+    );
   };
 
   useEffect(() => db.getOnOff(`${roomURI}`, setRoom), [roomURI]);
@@ -84,27 +100,31 @@ export default function Room(): JSX.Element {
   };
   if (!sessionKey) {
     return (
-      <div className="Room container py-4">
+      <Splash>
         <div className="row align-items-center">
           <div className="col-md" />
           <div className="col-md">
             <FillForm
-              handleSubmit={handleNickname}
+              error={error}
+              onSubmit={handleNickname}
               id="nickname"
               initialValue={room?.sessions[sessionKey]?.nickname}
-              label="Enter nickname"
+              label={t.enterNickname}
               name="nickname"
-              submitLabel="Start"
+              onChange={() => setError('')}
+              submitLabel={t.joinRoom}
             />
           </div>
           <div className="col-md" />
         </div>
-      </div>
+      </Splash>
     );
   }
   return (
-    <div className="Room">
+    <div className="Room mb-4">
       <Menu
+        error={error}
+        onChange={() => setError('')}
         initialNicknameValue={room?.sessions[sessionKey]?.nickname}
         onNicknameSubmit={handleNickname}
       />
@@ -120,14 +140,29 @@ export default function Room(): JSX.Element {
           sessionKey={sessionKey}
           survey={survey}
         />
-        <button
-          className="btn btn-primary mb-4 RevealButton"
-          onClick={toggleFilling}
-        >
-          {room?.sessions[sessionKey].filling
-            ? 'Reveal all answers'
-            : 'Change my answers'}
-        </button>
+        <div className="row row-cols-auto g-3 align-items-center">
+          <button
+            className="btn btn-primary RevealButton"
+            onClick={toggleFilling}
+          >
+            {room?.sessions[sessionKey].filling
+              ? t.revealAnswers
+              : t.changeMyAnswers}
+          </button>
+          <div className="form-check mx-4">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              onChange={toggleRevealMyName}
+              value=""
+              id="revealMyName"
+              checked={!!room?.sessions[sessionKey].revealMyName}
+            />
+            <label className="form-check-label" htmlFor="revealMyName">
+              {t.revealMyName}
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );

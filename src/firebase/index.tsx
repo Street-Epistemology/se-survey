@@ -41,11 +41,11 @@ export async function getOn(
 }
 
 export async function getOff(ref: string): Promise<void> {
-  (await init()).database().ref(ref).off('value');
+  return (await init()).database().ref(ref).off('value');
 }
 
 export async function set(ref: string, value: unknown): Promise<void> {
-  (await init()).database().ref(ref).set(value);
+  return (await init()).database().ref(ref).set(value);
 }
 
 export async function push(ref: string): Promise<firebase.database.Reference> {
