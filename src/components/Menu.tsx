@@ -5,6 +5,8 @@ import FillForm from './FillForm';
 import NickWithBadge from './NickWithBadge';
 
 interface MenuProps {
+  error: string;
+  onChange: (val: string) => unknown;
   initialNicknameValue?: string;
   onNicknameSubmit: (args: string) => void;
 }
@@ -12,6 +14,8 @@ interface MenuProps {
 export default function Menu({
   initialNicknameValue,
   onNicknameSubmit,
+  onChange,
+  error,
 }: MenuProps): JSX.Element {
   const { lang } = useParams<RouteParamTypes>();
   return (
@@ -33,11 +37,13 @@ export default function Menu({
         >
           <div className="mx-2">
             <FillForm
-              handleSubmit={onNicknameSubmit}
-              name="nickname"
+              error={error}
               id="menuNickname"
               initialValue={initialNicknameValue}
               label="Enter nickname"
+              name="nickname"
+              onChange={onChange}
+              onSubmit={onNicknameSubmit}
               submitLabel="Set nickname"
             />
           </div>

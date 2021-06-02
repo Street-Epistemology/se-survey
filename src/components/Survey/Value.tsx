@@ -1,6 +1,6 @@
 import React from 'react';
 import { Answer, ServerRoom } from '../../DataTypes';
-import NickBadge from '../NickBadge';
+import getCharAt from '../../utils/getCharAt';
 import NickWithBadge from '../NickWithBadge';
 
 interface ValueProps {
@@ -15,6 +15,7 @@ interface ValueProps {
 interface Sessions {
   [key: string]: {
     nickname: string;
+    revealMyName: boolean;
   };
 }
 
@@ -25,20 +26,7 @@ interface UsersTypes {
 
 function Users({ mySessionKey, sessions }: UsersTypes) {
   const sessionKeys = Object.keys(sessions);
-  if (sessionKeys.length <= 1) {
-    return (
-      <React.Fragment>
-        {sessionKeys.map((sessionKey) => (
-          <NickBadge
-            hover
-            key={sessionKey}
-            me={mySessionKey === sessionKey}
-            nickname={sessions[sessionKey].nickname}
-          />
-        ))}
-      </React.Fragment>
-    );
-  }
+  if (sessionKeys.length === 0) return <React.Fragment />;
   return (
     <React.Fragment>
       <div
@@ -46,17 +34,44 @@ function Users({ mySessionKey, sessions }: UsersTypes) {
           sessionKeys.includes(mySessionKey || '') ? 'myNickBadge' : ''
         }`}
       >
-        +{sessionKeys.length}
+        {sessionKeys.length === 1 && sessions[sessionKeys[0]].revealMyName
+          ? getCharAt(sessions[sessionKeys[0]].nickname || '', 0)
+          : sessionKeys.length}
         <div className="nickMenuContainer">
           <ul className="list-group nickMenu">
-            {sessionKeys.map((sessionKey) => (
-              <li key={sessionKey} className="list-group-item d-inline-flex">
+            {sessionKeys.map((sessionKey) =>
+              sessions[sessionKey].revealMyName ? (
+                <li key={sessionKey} className="list-group-item d-inline-flex">
+                  <NickWithBadge
+                    me={mySessionKey === sessionKey}
+                    nickname={sessions[sessionKey].nickname}
+                  />
+                </li>
+              ) : (
+                <React.Fragment key={sessionKey} />
+              )
+            )}
+            {!!sessionKeys.find(
+              (sessionKey) => !sessions[sessionKey].revealMyName
+            ) && (
+              <li className="list-group-item d-inline-flex">
                 <NickWithBadge
-                  me={mySessionKey === sessionKey}
-                  nickname={sessions[sessionKey].nickname}
+                  me={
+                    !!sessionKeys.filter(
+                      (sessionKey) =>
+                        !sessions[sessionKey].revealMyName &&
+                        mySessionKey === sessionKey
+                    ).length
+                  }
+                  badgeText={`${
+                    sessionKeys.filter(
+                      (sessionKey) => !sessions[sessionKey].revealMyName
+                    ).length
+                  }`}
+                  nickname="hidden"
                 />
               </li>
-            ))}
+            )}
           </ul>
         </div>
       </div>

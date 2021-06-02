@@ -28,6 +28,7 @@ export interface ServerAnswer {
 export interface ServerSession {
   nickname?: string;
   filling: boolean;
+  revealMyName: boolean;
   answers?: {
     [sectionKey: string]: {
       [questionKey: string]: {

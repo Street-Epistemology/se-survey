@@ -1,14 +1,18 @@
 import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
 
 export default function FillForm({
-  handleSubmit,
+  error,
+  onChange,
+  onSubmit,
   id,
   initialValue,
   label,
   name,
   submitLabel,
 }: {
-  handleSubmit: (value: string) => unknown;
+  error?: string;
+  onChange: (value: string) => unknown;
+  onSubmit: (value: string) => unknown;
   id: string;
   initialValue?: string;
   label: string;
@@ -17,12 +21,14 @@ export default function FillForm({
 }): JSX.Element {
   const [value, setValue] = useState<string>('');
 
-  const onChange = (event: FormEvent<HTMLInputElement>) =>
+  const handleChange = (event: FormEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value);
+    onChange(value);
+  };
 
-  const onSubmit = (event: SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    handleSubmit(value);
+    onSubmit(value);
   };
 
   useEffect(() => {
@@ -32,19 +38,19 @@ export default function FillForm({
   }, [initialValue]);
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="form-floating">
         <input
-          className="form-control"
+          className={`form-control${error ? ' is-invalid' : ''}`}
           id={id}
           name={name}
-          onChange={onChange}
-          placeholder={label}
+          onChange={handleChange}
+          placeholder={error || label}
           required
           type="text"
           value={typeof value === 'string' ? value : initialValue}
         />
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>{error || label}</label>
         <div className="d-grid mx-auto pt-1">
           <button type="submit" className="btn btn-primary">
             {submitLabel}
