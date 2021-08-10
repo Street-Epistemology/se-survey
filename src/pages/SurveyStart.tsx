@@ -19,7 +19,7 @@ export default function AboutPage(): JSX.Element {
     lang,
   ]);
 
-  if (!t) {
+  if (!t.description) {
     return <Redirect to={`/${defaultLang}`} />;
   }
 
