@@ -19,8 +19,8 @@ export default function Header({
         <h3 className="col-sm text-uppercase w-100">{title}</h3>
       </div>
       <div className="col-md-auto align-self-start">
-				<DarkModeSwitcher></DarkModeSwitcher>
-			</div>
+        <DarkModeSwitcher></DarkModeSwitcher>
+      </div>
     </div>
   );
 }

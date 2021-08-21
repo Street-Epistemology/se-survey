@@ -149,15 +149,23 @@ img.logo {
 }
 
 .style_mode_switch_icon {
-	width: 25px;
-	height: 25px;
-	font-size: 25px;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
 }
 
 .style_mode_switch_icon:hover {
-	color:#444d55
+  color: #444d55;
 }
 
+/* Dark mode overrides */
 body.style_dark_mode {
-	background-color: #ffd88f;
+  --bg-main-color: hsl(200, 10%, 15%);
+  --bg-main-lighter-color: hsl(200, 10%, 20%);
+  --bg-main-darker-color: hsl(200, 10%, 10%);
+  --text-color: hsl(0, 0%, 80%);
+  --icon-color: hsl(0, 0%, 80%);
+  --icon-hover-color: hsl(0, 0%, 85%);
+
+  background-color: var(--bg-main-color);
 }

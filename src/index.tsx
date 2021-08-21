@@ -10,7 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import StartRoom from './pages/StartRoom';
 import SurveyStart from './pages/SurveyStart';
 import About from './pages/About';
-import * as darkMode from './utils/darkModeHelper'
+import * as darkMode from './utils/darkModeHelper';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -42,5 +42,5 @@ ReactDOM.render(
 );
 
 if (darkMode.isDarkModeEnabled()) {
-	darkMode.enableDarkMode();
+  darkMode.enableDarkMode();
 }
