@@ -147,3 +147,17 @@ img.logo {
 .nickBadge:hover .nickMenu {
   display: flex;
 }
+
+.style_mode_switch_icon {
+	width: 25px;
+	height: 25px;
+	font-size: 25px;
+}
+
+.style_mode_switch_icon:hover {
+	color:#444d55
+}
+
+body.style_dark_mode {
+	background-color: #ffd88f;
+}

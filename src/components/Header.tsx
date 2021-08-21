@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/se-logo-color.png';
+import DarkModeSwitcher from './DarkModeSwitcher';
 
 export default function Header({
   title,
@@ -17,6 +18,9 @@ export default function Header({
       <div className="col align-middle text-center">
         <h3 className="col-sm text-uppercase w-100">{title}</h3>
       </div>
+      <div className="col-md-auto align-self-start">
+				<DarkModeSwitcher></DarkModeSwitcher>
+			</div>
     </div>
   );
 }

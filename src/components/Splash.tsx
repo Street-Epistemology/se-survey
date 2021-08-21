@@ -3,6 +3,7 @@ import logo from '../images/se-logo-color.png';
 import { Link, useParams } from 'react-router-dom';
 import * as db from '../firebase';
 import { RouteParamTypes } from '../DataTypes';
+import DarkModeSwitcher from './DarkModeSwitcher';
 
 export function getArrayFromPropKey(
   t: { [key: string]: string },
@@ -30,6 +31,9 @@ export default function AboutPage({
 
   return (
     <div className="container fluid">
+      <div className="d-flex justify-content-end">
+        <DarkModeSwitcher></DarkModeSwitcher>
+      </div>
       <div className="jumbotron">
         <div className="container">
           <div className="col-md-auto text-center">
