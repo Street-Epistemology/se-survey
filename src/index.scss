@@ -162,6 +162,7 @@ body.style_dark_mode {
   --bg-main-color: hsl(200, 10%, 15%);
   --bg-main-lighter-color: hsl(200, 10%, 20%);
   --bg-main-darker-color: hsl(200, 10%, 10%);
+  --bg-main-darker2-color: hsl(200, 10%, 5%);
   --text-color: hsl(0, 0%, 80%);
   --icon-color: hsl(0, 0%, 80%);
   --icon-hover-color: hsl(0, 0%, 90%);
@@ -214,6 +215,10 @@ body.style_dark_mode {
   .table-hover > tbody > tr:hover {
     --bs-table-accent-bg: var(--bg-main-darker-color);
     color: var(--text-color);
+  }
+
+  .table-dark th {
+    background-color: var(--bg-main-darker2-color) !important;
   }
 
   .dropdown-menu {
