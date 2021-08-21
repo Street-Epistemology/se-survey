@@ -1,0 +1,231 @@
+/* checkboxes */
+.td-check {
+  cursor: pointer;
+  min-width: 30px;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+@media screen and (min-width: 320px) {
+  .td-check {
+    min-width: calc(30px + 25 * ((100vw - 320px) / 1000));
+  }
+}
+@media screen and (min-width: 1000px) {
+  .td-check {
+    min-width: 50px;
+    width: 50px;
+    font-size: 25px;
+  }
+}
+
+img.logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.scale-text {
+  font-size: 12px;
+}
+@media screen and (min-width: 320px) {
+  .scale-text {
+    font-size: calc(12px + 8 * ((100vw - 320px) / 1000));
+  }
+}
+@media screen and (min-width: 1000px) {
+  .scale-text {
+    font-size: 20px;
+  }
+}
+
+.opacity-30 {
+  opacity: 0.3;
+}
+
+.zoom {
+  zoom: 1.5;
+  -moz-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+/*ABOUT PAGE*/
+.jumbotron {
+  padding: 4rem 2rem;
+  margin-bottom: 2rem;
+  background-color: var(--bs-light);
+  border-radius: 0.3rem;
+  background-size: cover;
+}
+
+.difference {
+  color: white;
+  mix-blend-mode: difference;
+  filter: drop-shadow(0.05em 0.05em grey);
+}
+
+/*MENU*/
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@media print {
+  .overlay,
+  img.logo,
+  .ShareInfo,
+  .RevealButton {
+    display: none;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.menu-button {
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: 9999;
+  pointer-events: all;
+}
+
+.nickBadge {
+  align-items: center;
+  background-color: #5b0061;
+  border-radius: 50%;
+  color: aliceblue;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 28px;
+  width: 28px;
+}
+
+.nickBadge.myNickBadge {
+  background-color: #0b5ed7;
+}
+
+.badges {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.badges > .nickBadge:not(:first-of-type) {
+  margin-left: -7px;
+  border-left: 1px white solid;
+}
+
+.nickMenuContainer {
+  position: relative;
+}
+
+.nickMenu {
+  position: absolute;
+  display: none;
+  right: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.nickMenu :first-child {
+  border-top: unset;
+}
+.nickMenu :last-child {
+  border-bottom: unset;
+}
+
+.nickBadge:hover .nickMenu {
+  display: flex;
+}
+
+.style_mode_switch_icon {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  &:hover {
+    color: hsl(210, 10%, 30%);
+  }
+}
+
+/* Dark mode overrides */
+body.style_dark_mode {
+  --bg-main-color: hsl(200, 10%, 15%);
+  --bg-main-lighter-color: hsl(200, 10%, 20%);
+  --bg-main-darker-color: hsl(200, 10%, 10%);
+  --text-color: hsl(0, 0%, 80%);
+  --icon-color: hsl(0, 0%, 80%);
+  --icon-hover-color: hsl(0, 0%, 90%);
+  --border-color: hsl(0, 0%, 50%);
+
+  .bg-light {
+    background-color: var(--bg-main-color) !important;
+  }
+
+  background-color: var(--bg-main-color);
+  color: var(--text-color);
+
+  .border,
+  .border-top,
+  .border-right,
+  .border-bottom,
+  .border-left {
+    border-color: var(--border-color) !important;
+  }
+
+  .style_mode_switch_icon {
+    &:hover {
+      color: var(--icon-hover-color);
+    }
+  }
+
+  input {
+    color: var(--text-color);
+    background-color: var(--bg-main-color);
+    border-color: var(--border-color);
+    &:focus {
+      background-color: var(--bg-main-color);
+    }
+  }
+
+  .form-control:focus {
+    color: var(--text-color);
+  }
+
+  .jumbotron {
+    background-color: var(--bg-main-color);
+    border: solid 1px var(--border-color);
+  }
+
+  .table {
+    color: var(--text-color);
+    border: solid 1px var(--border-color);
+  }
+
+  .table-hover > tbody > tr:hover {
+    --bs-table-accent-bg: var(--bg-main-darker-color);
+    color: var(--text-color);
+  }
+
+  .dropdown-menu {
+    background-color: var(--bg-main-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+
+  .dropdown-item {
+    color: var(--text-color);
+    &:hover {
+      background-color: var(--bg-main-lighter-color);
+    }
+  }
+}
