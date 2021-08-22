@@ -30,15 +30,15 @@ function Users({ mySessionKey, sessions }: UsersTypes) {
   return (
     <React.Fragment>
       <div
-        className={`nickBadge ${
-          sessionKeys.includes(mySessionKey || '') ? 'myNickBadge' : ''
+        className={`nick-badge ${
+          sessionKeys.includes(mySessionKey || '') ? 'my-nick-badge' : ''
         }`}
       >
         {sessionKeys.length === 1 && sessions[sessionKeys[0]].revealMyName
           ? getCharAt(sessions[sessionKeys[0]].nickname || '', 0)
           : sessionKeys.length}
-        <div className="nickMenuContainer">
-          <ul className="list-group nickMenu">
+        <div className="nick-menu-container">
+          <ul className="list-group nick-menu">
             {sessionKeys.map((sessionKey) =>
               sessions[sessionKey].revealMyName ? (
                 <li key={sessionKey} className="list-group-item d-inline-flex">
