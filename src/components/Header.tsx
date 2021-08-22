@@ -9,17 +9,16 @@ export default function Header({
   title: string | undefined;
 }): JSX.Element {
   return (
-    <div className="row align-items-center">
-      <div className="col-md-auto text-center">
-        <Link className="col-sm" to="/">
-          <img src={logo} className="logo m-4" alt="logo" />
-        </Link>
-      </div>
-      <div className="col align-middle text-center">
-        <h3 className="col-sm text-uppercase w-100">{title}</h3>
-      </div>
-      <div className="col-md-auto align-self-start">
-        <DarkModeSwitcher></DarkModeSwitcher>
+    <div>
+      <div className="row align-items-center">
+        <div className="col-md-auto text-center">
+          <Link className="col-sm" to="/">
+            <img src={logo} className="logo m-4" alt="logo" />
+          </Link>
+        </div>
+        <div className="col align-middle text-center">
+          <h3 className="col-sm text-uppercase w-100">{title}</h3>
+        </div>
       </div>
     </div>
   );

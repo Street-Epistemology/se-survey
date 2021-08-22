@@ -148,89 +148,97 @@ img.logo {
   display: flex;
 }
 
-.style_mode_switch_icon {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  &:hover {
-    color: hsl(210, 10%, 30%);
+/* Dark mode */
+// dark mode disabled when printing
+@media print {
+  .style-mode-switch-icon {
+    display: none;
   }
 }
-
-/* Dark mode overrides */
-body.style_dark_mode {
-  --bg-main-color: hsl(200, 10%, 15%);
-  --bg-main-lighter-color: hsl(200, 10%, 20%);
-  --bg-main-darker-color: hsl(200, 10%, 10%);
-  --bg-main-darker2-color: hsl(200, 10%, 5%);
-  --text-color: hsl(0, 0%, 80%);
-  --icon-color: hsl(0, 0%, 80%);
-  --icon-hover-color: hsl(0, 0%, 90%);
-  --border-color: hsl(0, 0%, 50%);
-
-  .bg-light {
-    background-color: var(--bg-main-color) !important;
-  }
-
-  background-color: var(--bg-main-color);
-  color: var(--text-color);
-
-  .border,
-  .border-top,
-  .border-right,
-  .border-bottom,
-  .border-left {
-    border-color: var(--border-color) !important;
-  }
-
-  .style_mode_switch_icon {
+@media not print {
+  .style-mode-switch-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    cursor: pointer;
     &:hover {
-      color: var(--icon-hover-color);
+      color: hsl(210, 10%, 30%);
     }
   }
+  body.style-dark-mode {
+    --bg-main-color: hsl(200, 10%, 15%);
+    --bg-main-lighter-color: hsl(200, 10%, 20%);
+    --bg-main-darker-color: hsl(200, 10%, 10%);
+    --bg-main-darker2-color: hsl(200, 10%, 5%);
+    --text-color: hsl(0, 0%, 80%);
+    --icon-color: hsl(0, 0%, 80%);
+    --icon-hover-color: hsl(0, 0%, 90%);
+    --border-color: hsl(0, 0%, 50%);
 
-  input {
-    color: var(--text-color);
+    .bg-light {
+      background-color: var(--bg-main-color) !important;
+    }
+
     background-color: var(--bg-main-color);
-    border-color: var(--border-color);
-    &:focus {
+    color: var(--text-color);
+
+    .border,
+    .border-top,
+    .border-right,
+    .border-bottom,
+    .border-left {
+      border-color: var(--border-color) !important;
+    }
+
+    .style-mode-switch-icon {
+      &:hover {
+        color: var(--icon-hover-color);
+      }
+    }
+
+    input {
+      color: var(--text-color);
       background-color: var(--bg-main-color);
+      border-color: var(--border-color);
+      &:focus {
+        background-color: var(--bg-main-color);
+      }
     }
-  }
 
-  .form-control:focus {
-    color: var(--text-color);
-  }
+    .form-control:focus {
+      color: var(--text-color);
+    }
 
-  .jumbotron {
-    background-color: var(--bg-main-color);
-    border: solid 1px var(--border-color);
-  }
+    .jumbotron {
+      background-color: var(--bg-main-color);
+      border: solid 1px var(--border-color);
+    }
 
-  .table {
-    color: var(--text-color);
-    border: solid 1px var(--border-color);
-  }
+    .table {
+      color: var(--text-color);
+      border: solid 1px var(--border-color);
+    }
 
-  .table-hover > tbody > tr:hover {
-    --bs-table-accent-bg: var(--bg-main-darker-color);
-    color: var(--text-color);
-  }
+    .table-hover > tbody > tr:hover {
+      --bs-table-accent-bg: var(--bg-main-darker-color);
+      color: var(--text-color);
+    }
 
-  .table-dark th {
-    background-color: var(--bg-main-darker2-color) !important;
-  }
+    .table-dark th {
+      background-color: var(--bg-main-darker2-color) !important;
+    }
 
-  .dropdown-menu {
-    background-color: var(--bg-main-color);
-    color: var(--text-color);
-    border-color: var(--border-color);
-  }
+    .dropdown-menu {
+      background-color: var(--bg-main-color);
+      color: var(--text-color);
+      border-color: var(--border-color);
+    }
 
-  .dropdown-item {
-    color: var(--text-color);
-    &:hover {
-      background-color: var(--bg-main-lighter-color);
+    .dropdown-item {
+      color: var(--text-color);
+      &:hover {
+        background-color: var(--bg-main-lighter-color);
+      }
     }
   }
 }

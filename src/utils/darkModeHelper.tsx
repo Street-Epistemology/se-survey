@@ -2,7 +2,7 @@ const DARK_MODE = {
   enabled: 'enabled',
   disabled: 'disabled',
   storageKey: 'dark_mode',
-  class: 'style_dark_mode',
+  class: 'style-dark-mode',
 };
 
 export function isDarkModeEnabled(): boolean {

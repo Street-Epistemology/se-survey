@@ -8,7 +8,7 @@ export default function DarkModeSwitcher(): JSX.Element {
       <FontAwesomeIcon
         onClick={toggleDarkMode}
         icon={faAdjust}
-        className="style_mode_switch_icon"
+        className="style-mode-switch-icon "
       />
     </div>
   );
