@@ -127,7 +127,6 @@ export default function Room(): JSX.Element {
         onChange={() => setError('')}
         initialNicknameValue={room?.sessions[sessionKey]?.nickname}
         onNicknameSubmit={handleNickname}
-        showDarkModeSwitcher={true}
       />
 
       <div className="container-xxl">

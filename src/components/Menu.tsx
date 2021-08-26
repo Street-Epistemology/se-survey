@@ -10,7 +10,6 @@ interface MenuProps {
   onChange: (val: string) => unknown;
   initialNicknameValue?: string;
   onNicknameSubmit: (args: string) => void;
-  showDarkModeSwitcher?: boolean;
 }
 
 export default function Menu({
@@ -18,17 +17,14 @@ export default function Menu({
   onNicknameSubmit,
   onChange,
   error,
-  showDarkModeSwitcher,
 }: MenuProps): JSX.Element {
   const { lang } = useParams<RouteParamTypes>();
   return (
     <div className="overlay">
       <div className="dropleft m-2 float-right menu-button row">
-        {showDarkModeSwitcher && (
-          <div className="col d-flex justify-content-end">
-            <DarkModeSwitcher></DarkModeSwitcher>
-          </div>
-        )}
+        <div className="col d-flex justify-content-end">
+          <DarkModeSwitcher></DarkModeSwitcher>
+        </div>
         <div className="col d-flex justify-content-end">
           <button
             aria-expanded="false"
