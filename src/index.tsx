@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-import './index.css';
+import './index.scss';
 import 'bootstrap';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import RedirectLanguage from './pages/RedirectLanguage';
@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import StartRoom from './pages/StartRoom';
 import SurveyStart from './pages/SurveyStart';
 import About from './pages/About';
+import * as darkMode from './utils/darkModeHelper';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -39,3 +40,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+if (darkMode.isDarkModeEnabled()) {
+  darkMode.enableDarkMode();
+}
