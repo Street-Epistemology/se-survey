@@ -14,7 +14,7 @@ export default function ShareInfo({
   url,
 }: ShareInfoProps): JSX.Element {
   return (
-    <div className="ShareInfo">
+    <div className="share-info">
       <div className="text-center mx-auto">
         Share this link with others and invite them to fill out the survey with
         you:

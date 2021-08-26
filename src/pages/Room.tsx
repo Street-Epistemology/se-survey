@@ -140,11 +140,8 @@ export default function Room(): JSX.Element {
           sessionKey={sessionKey}
           survey={survey}
         />
-        <div className="row row-cols-auto g-3 align-items-center">
-          <button
-            className="btn btn-primary RevealButton"
-            onClick={toggleFilling}
-          >
+        <div className="row row-cols-auto g-3 align-items-center reveal-options">
+          <button className="btn btn-primary" onClick={toggleFilling}>
             {room?.sessions[sessionKey].filling
               ? t.revealAnswers
               : t.changeMyAnswers}

@@ -76,8 +76,8 @@ img.logo {
 @media print {
   .overlay,
   img.logo,
-  .ShareInfo,
-  .RevealButton {
+  .share-info,
+  .reveal-options {
     display: none;
   }
 }
@@ -94,7 +94,7 @@ img.logo {
   pointer-events: all;
 }
 
-.nickBadge {
+.nick-badge {
   align-items: center;
   background-color: #5b0061;
   border-radius: 50%;
@@ -107,7 +107,7 @@ img.logo {
   width: 28px;
 }
 
-.nickBadge.myNickBadge {
+.nick-badge.my-nick-badge {
   background-color: #0b5ed7;
 }
 
@@ -117,16 +117,16 @@ img.logo {
   justify-content: center;
 }
 
-.badges > .nickBadge:not(:first-of-type) {
+.badges > .nick-badge:not(:first-of-type) {
   margin-left: -7px;
   border-left: 1px white solid;
 }
 
-.nickMenuContainer {
+.nick-menu-container {
   position: relative;
 }
 
-.nickMenu {
+.nick-menu {
   position: absolute;
   display: none;
   right: 0;
@@ -137,14 +137,14 @@ img.logo {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.nickMenu :first-child {
+.nick-menu :first-child {
   border-top: unset;
 }
-.nickMenu :last-child {
+.nick-menu :last-child {
   border-bottom: unset;
 }
 
-.nickBadge:hover .nickMenu {
+.nick-badge:hover .nick-menu {
   display: flex;
 }
 
