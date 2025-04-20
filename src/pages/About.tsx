@@ -1,13 +1,12 @@
-import React from 'react';
 import logo from '../images/se-logo-color.png';
 import { Link } from 'react-router-dom';
 import DarkModeSwitcher from '../components/DarkModeSwitcher';
 
-export default function About(): JSX.Element {
+export default function About() {
   return (
     <div className="container fluid">
       <div className="d-flex justify-content-end">
-        <DarkModeSwitcher></DarkModeSwitcher>
+        <DarkModeSwitcher />
       </div>
       <div className="jumbotron">
         <div className="container">

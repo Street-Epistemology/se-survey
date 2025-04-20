@@ -10,7 +10,7 @@ export default function NickBadge({
   me?: boolean;
   nickname: string;
   opaque?: boolean;
-}): JSX.Element {
+}) {
   return (
     <div
       className={`nick-badge${me ? ' my-nick-badge' : ''}${

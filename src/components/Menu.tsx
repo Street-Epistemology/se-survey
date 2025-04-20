@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { RouteParamTypes } from '../DataTypes';
+import { RouteParams } from '../DataTypes';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import FillForm from './FillForm';
 import NickWithBadge from './NickWithBadge';
@@ -17,13 +16,13 @@ export default function Menu({
   onNicknameSubmit,
   onChange,
   error,
-}: MenuProps): JSX.Element {
-  const { lang } = useParams<RouteParamTypes>();
+}: MenuProps) {
+  const { lang } = useParams<RouteParams>();
   return (
     <div className="overlay">
       <div className="dropleft m-2 float-right menu-button row">
         <div className="col d-flex justify-content-end">
-          <DarkModeSwitcher></DarkModeSwitcher>
+          <DarkModeSwitcher />
         </div>
         <div className="col d-flex justify-content-end">
           <button

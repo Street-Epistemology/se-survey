@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import logo from '../images/se-logo-color.png';
 import { Link, useParams } from 'react-router-dom';
 import * as db from '../firebase';
-import { RouteParamTypes } from '../DataTypes';
+import { RouteParams } from '../DataTypes';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 export function getArrayFromPropKey(
   t: { [key: string]: string },
   key = 'instruction',
   arr: Array<string> = [],
-  i = 1
+  i = 1,
 ): Array<string> {
   if (t[`${key}${i}`]) {
     return getArrayFromPropKey(t, key, [...arr, t[`${key}${i}`]], i + 1);
@@ -17,22 +17,19 @@ export function getArrayFromPropKey(
   return arr;
 }
 
-export default function AboutPage({
-  children,
-}: {
-  children?: React.ReactNode;
-}): JSX.Element {
-  const { lang } = useParams<RouteParamTypes>();
+export default function AboutPage({ children }: { children?: ReactNode }) {
+  const { lang } = useParams<RouteParams>();
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
 
-  useEffect(() => db.getOnOff(`/translations/${lang}`, setTranslations), [
-    lang,
-  ]);
+  useEffect(
+    () => db.getOnOff(`/translations/${lang}`, setTranslations),
+    [lang],
+  );
 
   return (
     <div className="container fluid">
       <div className="d-flex justify-content-end">
-        <DarkModeSwitcher></DarkModeSwitcher>
+        <DarkModeSwitcher />
       </div>
       <div className="jumbotron">
         <div className="container">

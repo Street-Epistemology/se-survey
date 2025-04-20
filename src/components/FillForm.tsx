@@ -18,7 +18,7 @@ export default function FillForm({
   label: string;
   name: string;
   submitLabel: string;
-}): JSX.Element {
+}) {
   const [value, setValue] = useState<string>('');
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {

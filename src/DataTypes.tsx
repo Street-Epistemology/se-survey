@@ -92,12 +92,12 @@ export interface ServerSurveys {
   };
 }
 
-export interface RouteParamTypes {
+export type RouteParams = {
   lang: string;
   surveyKey?: string;
   roomKey?: string;
   sessionKey?: string;
-}
+};
 
 export interface AboutTypes {
   description?: string;

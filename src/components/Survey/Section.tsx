@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { Answer, ServerRoom, ServerSection } from '../../DataTypes';
 import TextHeader from '../TextHeader';
 import Question from './Question';
@@ -20,9 +19,9 @@ export default function Section({
   sectionKey,
   sectionStartNumber,
   sessionKey,
-}: SectionProps): JSX.Element {
+}: SectionProps) {
   return (
-    <Fragment key={section.title}>
+    <>
       <thead className="table-dark">
         <tr>
           <TextHeader title={section.title} text={section.answersTitle} />
@@ -51,6 +50,6 @@ export default function Section({
           );
         })}
       </tbody>
-    </Fragment>
+    </>
   );
 }

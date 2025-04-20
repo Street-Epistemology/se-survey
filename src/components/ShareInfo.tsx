@@ -1,4 +1,3 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -9,10 +8,7 @@ interface ShareInfoProps {
   url: string;
 }
 
-export default function ShareInfo({
-  onCopy,
-  url,
-}: ShareInfoProps): JSX.Element {
+export default function ShareInfo({ onCopy, url }: ShareInfoProps) {
   return (
     <div className="share-info">
       <div className="text-center mx-auto">

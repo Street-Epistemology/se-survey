@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Router from 'react-router-dom';
 import copy from 'clipboard-copy';
 
 import {
   Answer,
-  RouteParamTypes,
+  RouteParams,
   ServerSurvey,
   ServerRoom,
   ServerSession,
@@ -20,8 +20,8 @@ import FillForm from '../components/FillForm';
 import { getSessionKey, setSessionKey } from '../utils/sessionKey';
 import Splash from '../components/Splash';
 
-export default function Room(): JSX.Element {
-  const { lang, roomKey, surveyKey } = Router.useParams<RouteParamTypes>();
+export default function Room() {
+  const { lang = '', roomKey, surveyKey } = Router.useParams<RouteParams>();
 
   const roomURL = `${lang}/${surveyKey}/${roomKey}`;
   const roomURI = `/rooms/${roomURL}`;
@@ -33,14 +33,15 @@ export default function Room(): JSX.Element {
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState('');
 
-  useEffect(() => db.getOnOff(`/translations/${lang}`, setTranslations), [
-    lang,
-  ]);
+  useEffect(
+    () => db.getOnOff(`/translations/${lang}`, setTranslations),
+    [lang],
+  );
 
-  useEffect(() => db.getOnOff(`/surveys/${lang}/${surveyKey}`, setSurvey), [
-    lang,
-    surveyKey,
-  ]);
+  useEffect(
+    () => db.getOnOff(`/surveys/${lang}/${surveyKey}`, setSurvey),
+    [lang, surveyKey],
+  );
 
   const handleResponse = (answer: Answer) => {
     if (!answer || !sessionKey || !room?.sessions[sessionKey]?.filling) return;
@@ -68,12 +69,20 @@ export default function Room(): JSX.Element {
         const sessionsURI = `${roomURI}/sessions`;
         const { key } = await db.push(sessionsURI);
         await db.set(`${sessionsURI}/${key}`, { filling: true, nickname });
-        setSessionKey({ lang, surveyKey, roomKey, key });
+        setSessionKey({
+          lang: lang || '',
+          surveyKey: surveyKey || '',
+          roomKey: roomKey || '',
+          key,
+        });
         return;
       }
       await db.set(`${roomURI}/sessions/${sessionKey}/nickname`, nickname);
     } catch (error) {
-      setError(error.toString().split(':').pop());
+      setError(
+        (error instanceof Error && error.toString().split(':').pop()) ||
+          'An error occurred',
+      );
     }
   };
 
@@ -81,7 +90,7 @@ export default function Room(): JSX.Element {
     if (!sessionKey) return;
     db.set(
       `${roomURI}/sessions/${sessionKey}/revealMyName`,
-      !room?.sessions[sessionKey]?.revealMyName
+      !room?.sessions[sessionKey]?.revealMyName,
     );
   };
 
@@ -89,7 +98,7 @@ export default function Room(): JSX.Element {
     if (!sessionKey) return;
     db.set(
       `${roomURI}/sessions/${sessionKey}/filling`,
-      !room?.sessions[sessionKey]?.filling
+      !room?.sessions[sessionKey]?.filling,
     );
   };
 

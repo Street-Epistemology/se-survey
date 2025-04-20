@@ -1,75 +1,81 @@
-import firebase from 'firebase/app';
-import 'firebase/database';
-import 'firebase/analytics';
-import 'firebase/auth';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import {
+  getDatabase,
+  ref,
+  get,
+  set as fbSet,
+  push as fbPush,
+  onValue,
+  off,
+  Database,
+  DatabaseReference,
+  DataSnapshot,
+} from 'firebase/database';
+import { getAnalytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
+let app: FirebaseApp;
+let database: Database;
+
 async function init() {
-  if (firebase.apps.length) return firebase;
+  if (app) return { app, database };
+
   const response = await fetch('/__/firebase/init.json');
-  if (firebase.apps.length) return firebase;
-  const responseJSON = await response.json();
-  if (firebase.apps.length) return firebase;
-  firebase.initializeApp(responseJSON);
-  firebase.analytics();
-  firebase.auth();
-  return firebase;
+  const config = await response.json();
+
+  app = initializeApp(config);
+  database = getDatabase(app);
+  getAnalytics(app);
+  getAuth(app);
+
+  return { app, database };
 }
 
-export async function getOnce(
-  ref: string
-): Promise<firebase.database.DataSnapshot> {
-  return (await (await init()).database().ref(ref).once('value')).val();
+export async function getOnce(path: string): Promise<DataSnapshot> {
+  await init();
+  const snapshot = await get(ref(database, path));
+  return snapshot.val();
 }
 
-export async function getOn(
-  ref: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callback: (args?: any) => void,
-  config?: { orderByChild: string; equalTo: string | boolean }
+export async function getOn<T>(
+  path: string,
+  callback: (args: T) => void,
 ): Promise<void> {
-  const reference = (await init()).database().ref(ref);
-  let lastRef;
-  if (config?.orderByChild && config?.equalTo) {
-    lastRef = reference
-      .orderByChild(config.orderByChild)
-      .equalTo(config.equalTo);
-  } else {
-    lastRef = reference;
-  }
-  lastRef.on('value', (snap) => callback(snap.val()));
+  await init();
+  onValue(ref(database, path), (snapshot) => callback(snapshot.val()));
 }
 
-export async function getOff(ref: string): Promise<void> {
-  return (await init()).database().ref(ref).off('value');
+export async function getOff(path: string): Promise<void> {
+  await init();
+  return off(ref(database, path));
 }
 
-export async function set(ref: string, value: unknown): Promise<void> {
-  return (await init()).database().ref(ref).set(value);
+export async function set(path: string, value: unknown): Promise<void> {
+  await init();
+  return fbSet(ref(database, path), value);
 }
 
-export async function push(ref: string): Promise<firebase.database.Reference> {
-  return (await init()).database().ref(ref).push();
+export async function push(path: string): Promise<DatabaseReference> {
+  await init();
+  return fbPush(ref(database, path));
 }
 
-export async function database(): Promise<firebase.database.Database> {
-  return (await init()).database();
+export async function getDatabaseInstance(): Promise<Database> {
+  const { database } = await init();
+  return database;
 }
 
-export function getOnOff(
-  ref: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callback: (args?: any) => void,
-  config?: { orderByChild: string; equalTo: string | boolean }
+export function getOnOff<T>(
+  path: string,
+  callback: (args: T) => void,
 ): () => void {
-  getOn(ref, callback, config);
-  return () => {
-    getOff(ref);
-  };
+  getOn(path, callback);
+  return () => getOff(path);
 }
 
 const db = {
-  database,
+  getDatabaseInstance,
   getOn,
   getOnce,
   getOff,
@@ -84,7 +90,7 @@ export function useDB(): {
   const [inited, setInited] = useState(false);
 
   useEffect(() => {
-    if (firebase.apps.length) {
+    if (app) {
       setInited(true);
     } else {
       init().then(() => {

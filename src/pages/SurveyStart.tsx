@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import ReactHtmlParser from 'react-html-parser';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import parse from 'html-react-parser';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import * as db from '../firebase';
-import { RouteParamTypes } from '../DataTypes';
+import { RouteParams } from '../DataTypes';
 import Splash, { getArrayFromPropKey } from '../components/Splash';
 
 const defaultLang = 'en';
 const defaultsurveyKey = 'nathan';
 
-export default function AboutPage(): JSX.Element {
-  const {
-    lang = defaultLang,
-    surveyKey = defaultsurveyKey,
-  } = useParams<RouteParamTypes>();
+export default function AboutPage() {
+  const { lang = defaultLang, surveyKey = defaultsurveyKey } =
+    useParams<RouteParams>();
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
 
-  useEffect(() => db.getOnOff(`/translations/${lang}`, setTranslations), [
-    lang,
-  ]);
+  useEffect(
+    () => db.getOnOff(`/translations/${lang}`, setTranslations),
+    [lang],
+  );
 
   if (!t?.description) {
-    return <Redirect to={`/${defaultLang}`} />;
+    return <Navigate to={`/${defaultLang}`} replace />;
   }
 
   return (
@@ -32,8 +31,8 @@ export default function AboutPage(): JSX.Element {
       <ol>
         {getArrayFromPropKey(t, 'instruction').map(
           (instruction: string, key: number) => (
-            <li key={key}>{ReactHtmlParser(instruction)}</li>
-          )
+            <li key={key}>{parse(instruction)}</li>
+          ),
         )}
       </ol>
       <div className="d-grid mx-auto">

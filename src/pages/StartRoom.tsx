@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
-import { RouteParamTypes } from '../DataTypes';
+import { useEffect, useState } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { RouteParams } from '../DataTypes';
 import * as db from '../firebase';
 import { setSessionKey } from '../utils/sessionKey';
 import FillForm from '../components/FillForm';
 import Splash from '../components/Splash';
 
-export function StartRoom(): JSX.Element {
-  const { lang, surveyKey } = useParams<RouteParamTypes>();
+export function StartRoom() {
+  const { lang, surveyKey } = useParams<RouteParams>();
   const [roomKey, setroomKey] = useState<string | null>();
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState('');
@@ -18,16 +18,25 @@ export function StartRoom(): JSX.Element {
     const { key } = await db.push(roomURI);
     try {
       await db.set(`${roomURI}/${key}`, { nickname, filling: true });
-      setSessionKey({ lang, surveyKey, roomKey, key });
+      setSessionKey({
+        lang: lang || '',
+        surveyKey: surveyKey || '',
+        roomKey,
+        key,
+      });
       setroomKey(roomKey);
     } catch (error) {
-      setError(error.toString().split(':').pop());
+      setError(
+        (error instanceof Error && error.toString().split(':').pop()) ||
+          'An error occurred',
+      );
     }
   }
 
-  useEffect(() => db.getOnOff(`/translations/${lang}`, setTranslations), [
-    lang,
-  ]);
+  useEffect(
+    () => db.getOnOff(`/translations/${lang}`, setTranslations),
+    [lang],
+  );
 
   if (!roomKey) {
     return (
@@ -51,7 +60,7 @@ export function StartRoom(): JSX.Element {
       </Splash>
     );
   }
-  return <Redirect push to={`/${lang}/${surveyKey}/${roomKey}`} />;
+  return <Navigate to={`/${lang}/${surveyKey}/${roomKey}`} />;
 }
 
 export default StartRoom;

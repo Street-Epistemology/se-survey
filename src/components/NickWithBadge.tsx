@@ -8,7 +8,7 @@ export default function NickWithBadge({
   badgeText?: string;
   me?: boolean;
   nickname: string;
-}): JSX.Element {
+}) {
   return (
     <div className="d-inline-flex">
       <div className="mx-1">

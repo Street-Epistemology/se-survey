@@ -22,5 +22,9 @@ export function disableDarkMode(): void {
 }
 
 export function toggleDarkMode(): void {
-  isDarkModeEnabled() ? disableDarkMode() : enableDarkMode();
+  if (isDarkModeEnabled()) {
+    disableDarkMode();
+  } else {
+    enableDarkMode();
+  }
 }

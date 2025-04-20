@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.scss';
 import 'bootstrap';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RedirectLanguage from './pages/RedirectLanguage';
 import Room from './pages/Room';
 import ScrollToTop from './components/ScrollToTop';
@@ -12,33 +12,24 @@ import SurveyStart from './pages/SurveyStart';
 import About from './pages/About';
 import * as darkMode from './utils/darkModeHelper';
 
-ReactDOM.render(
-  <React.StrictMode>
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Failed to find the root element');
+const root = createRoot(rootElement);
+
+root.render(
+  <StrictMode>
     <Router>
       <ScrollToTop />
-      <Switch>
-        <Route path="/:lang/about">
-          <About />
-        </Route>
-        <Route path="/:lang/:surveyKey/new">
-          <StartRoom />
-        </Route>
-        <Route path="/:lang/:surveyKey/:roomKey">
-          <Room />
-        </Route>
-        <Route path="/:lang/:surveyKey">
-          <SurveyStart />
-        </Route>
-        <Route path="/:lang">
-          <SurveyStart />
-        </Route>
-        <Route path="/">
-          <RedirectLanguage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/:lang/about" element={<About />} />
+        <Route path="/:lang/:surveyKey/new" element={<StartRoom />} />
+        <Route path="/:lang/:surveyKey/:roomKey" element={<Room />} />
+        <Route path="/:lang/:surveyKey" element={<SurveyStart />} />
+        <Route path="/:lang" element={<SurveyStart />} />
+        <Route path="/" element={<RedirectLanguage />} />
+      </Routes>
     </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StrictMode>,
 );
 
 if (darkMode.isDarkModeEnabled()) {

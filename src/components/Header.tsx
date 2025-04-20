@@ -1,12 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/se-logo-color.png';
 
-export default function Header({
-  title,
-}: {
-  title: string | undefined;
-}): JSX.Element {
+export default function Header({ title }: { title?: string }) {
   return (
     <div className="row align-items-center">
       <div className="col-md-auto text-center">

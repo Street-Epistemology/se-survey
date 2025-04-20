@@ -7,5 +7,11 @@
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:prettier/recommended"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      { "allowShortCircuit": true }
+    ]
+  }
 }

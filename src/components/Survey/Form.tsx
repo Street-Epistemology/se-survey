@@ -13,14 +13,14 @@ export default function SurveyForm({
   room,
   sessionKey,
   survey,
-}: SurveyFormProps): JSX.Element {
+}: SurveyFormProps) {
   let previousQuestionsSum = 1;
   return (
     <table className="table table-bordered table-hover">
       {Object.keys(survey.sections || {}).map((sectionKey) => {
         const sectionStartNumber = previousQuestionsSum;
         previousQuestionsSum += Object.keys(
-          survey.sections[sectionKey].questions || {}
+          survey.sections[sectionKey].questions || {},
         ).length;
         return (
           <Section

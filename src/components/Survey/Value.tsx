@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Answer, ServerRoom } from '../../DataTypes';
 import getCharAt from '../../utils/getCharAt';
 import NickWithBadge from '../NickWithBadge';
@@ -26,9 +26,9 @@ interface UsersTypes {
 
 function Users({ mySessionKey, sessions }: UsersTypes) {
   const sessionKeys = Object.keys(sessions);
-  if (sessionKeys.length === 0) return <React.Fragment />;
+  if (sessionKeys.length === 0) return <></>;
   return (
-    <React.Fragment>
+    <>
       <div
         className={`nick-badge ${
           sessionKeys.includes(mySessionKey || '') ? 'my-nick-badge' : ''
@@ -48,11 +48,11 @@ function Users({ mySessionKey, sessions }: UsersTypes) {
                   />
                 </li>
               ) : (
-                <React.Fragment key={sessionKey} />
-              )
+                <Fragment key={sessionKey} />
+              ),
             )}
             {!!sessionKeys.find(
-              (sessionKey) => !sessions[sessionKey].revealMyName
+              (sessionKey) => !sessions[sessionKey].revealMyName,
             ) && (
               <li className="list-group-item d-inline-flex">
                 <NickWithBadge
@@ -60,12 +60,12 @@ function Users({ mySessionKey, sessions }: UsersTypes) {
                     !!sessionKeys.filter(
                       (sessionKey) =>
                         !sessions[sessionKey].revealMyName &&
-                        mySessionKey === sessionKey
+                        mySessionKey === sessionKey,
                     ).length
                   }
                   badgeText={`${
                     sessionKeys.filter(
-                      (sessionKey) => !sessions[sessionKey].revealMyName
+                      (sessionKey) => !sessions[sessionKey].revealMyName,
                     ).length
                   }`}
                   nickname="hidden"
@@ -75,7 +75,7 @@ function Users({ mySessionKey, sessions }: UsersTypes) {
           </ul>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
@@ -86,7 +86,7 @@ export default function Value({
   sectionKey,
   sessionKey,
   value,
-}: ValueProps): JSX.Element {
+}: ValueProps) {
   const sessions: Sessions = Object.keys(room?.sessions || {})
     .sort((a) => (sessionKey === a ? -1 : 0))
     .reduce((sessions, currentSessionKey) => {

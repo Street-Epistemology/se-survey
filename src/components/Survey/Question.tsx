@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { ServerQuestion } from '../../DataTypes';
 
 export interface QuestionProps {
@@ -10,7 +11,7 @@ export default function Question({
   question,
   questionNumber,
   renderValue,
-}: QuestionProps): JSX.Element {
+}: QuestionProps) {
   return (
     <tr>
       <td className="scale-text">{`${questionNumber}. ${question.text}`}</td>
