@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+
+import FillForm from '../components/FillForm';
+import Splash from '../components/Splash';
 import { RouteParams } from '../DataTypes';
 import * as db from '../firebase';
 import { setSessionKey } from '../utils/sessionKey';
-import FillForm from '../components/FillForm';
-import Splash from '../components/Splash';
 
 export function StartRoom() {
   const { lang, surveyKey } = useParams<RouteParams>();
@@ -41,22 +42,16 @@ export function StartRoom() {
   if (!roomKey) {
     return (
       <Splash>
-        <div className="row align-items-center">
-          <div className="col-md" />
-          <div className="col-md">
-            <FillForm
-              error={error}
-              onSubmit={createRoom}
-              id="nickname"
-              initialValue=""
-              name="nickname"
-              label={t.enterNickname}
-              onChange={() => setError('')}
-              submitLabel={t.createRoom}
-            />
-          </div>
-          <div className="col-md" />
-        </div>
+        <FillForm
+          error={error}
+          onSubmit={createRoom}
+          id="nickname"
+          initialValue=""
+          name="nickname"
+          label={t.enterNickname}
+          onChange={() => setError('')}
+          submitLabel={t.createRoom}
+        />
       </Splash>
     );
   }

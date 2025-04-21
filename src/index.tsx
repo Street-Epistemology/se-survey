@@ -1,15 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.css';
-import './index.scss';
-import 'bootstrap';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import './index.css';
+
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+
+import ScrollToTop from './components/ScrollToTop';
+import About from './pages/About';
 import RedirectLanguage from './pages/RedirectLanguage';
 import Room from './pages/Room';
-import ScrollToTop from './components/ScrollToTop';
 import StartRoom from './pages/StartRoom';
 import SurveyStart from './pages/SurveyStart';
-import About from './pages/About';
 import * as darkMode from './utils/darkModeHelper';
 
 const rootElement = document.getElementById('root');

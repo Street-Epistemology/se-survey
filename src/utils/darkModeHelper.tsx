@@ -2,7 +2,7 @@ const DARK_MODE = {
   enabled: 'enabled',
   disabled: 'disabled',
   storageKey: 'dark_mode',
-  class: 'style-dark-mode',
+  class: 'dark',
 };
 
 export function isDarkModeEnabled(): boolean {
@@ -12,12 +12,12 @@ export function isDarkModeEnabled(): boolean {
 }
 
 export function enableDarkMode(): void {
-  document.body.classList.add(DARK_MODE.class);
+  document.documentElement.classList.add(DARK_MODE.class);
   localStorage.setItem(DARK_MODE.storageKey, DARK_MODE.enabled);
 }
 
 export function disableDarkMode(): void {
-  document.body.classList.remove(DARK_MODE.class);
+  document.documentElement.classList.remove(DARK_MODE.class);
   localStorage.setItem(DARK_MODE.storageKey, DARK_MODE.disabled);
 }
 

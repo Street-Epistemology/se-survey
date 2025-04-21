@@ -5,7 +5,7 @@
  *
  */
 
-export default function getWholeChar(str: string, i: number): string | boolean {
+export default function getCharAt(str: string, i: number): string | boolean {
   const code = str.charCodeAt(i);
 
   if (Number.isNaN(code)) {
@@ -45,7 +45,7 @@ export default function getWholeChar(str: string, i: number): string | boolean {
 
 const str = 'A \uD87E\uDC04 Z'; // We could also use a non-BMP character directly
 for (let i = 0, chr; i < str.length; i += 1) {
-  chr = getWholeChar(str, i);
+  chr = getCharAt(str, i);
   if (chr === false) {
     continue;
   }

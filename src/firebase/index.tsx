@@ -1,19 +1,19 @@
+import { useEffect, useState } from 'react';
+import { getAnalytics } from 'firebase/analytics';
 import { FirebaseApp, initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import {
-  getDatabase,
-  ref,
-  get,
-  set as fbSet,
-  push as fbPush,
-  onValue,
-  off,
   Database,
   DatabaseReference,
   DataSnapshot,
+  push as fbPush,
+  set as fbSet,
+  get,
+  getDatabase,
+  off,
+  onValue,
+  ref,
 } from 'firebase/database';
-import { getAnalytics } from 'firebase/analytics';
-import { getAuth } from 'firebase/auth';
-import { useEffect, useState } from 'react';
 
 let app: FirebaseApp;
 let database: Database;

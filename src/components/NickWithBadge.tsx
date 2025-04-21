@@ -10,7 +10,7 @@ export default function NickWithBadge({
   nickname: string;
 }) {
   return (
-    <div className="d-inline-flex">
+    <>
       <div className="mx-1">
         <NickBadge me={me} nickname={badgeText || nickname} />
       </div>
@@ -20,6 +20,6 @@ export default function NickWithBadge({
       >
         {nickname}
       </div>
-    </div>
+    </>
   );
 }

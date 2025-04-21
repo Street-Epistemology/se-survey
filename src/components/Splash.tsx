@@ -1,8 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
-import logo from '../images/se-logo-color.png';
 import { Link, useParams } from 'react-router-dom';
-import * as db from '../firebase';
+
 import { RouteParams } from '../DataTypes';
+import * as db from '../firebase';
+import logo from '../images/se-logo-color.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 export function getArrayFromPropKey(
@@ -17,7 +18,7 @@ export function getArrayFromPropKey(
   return arr;
 }
 
-export default function AboutPage({ children }: { children?: ReactNode }) {
+export default function Splash({ children }: { children?: ReactNode }) {
   const { lang } = useParams<RouteParams>();
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
 
@@ -27,23 +28,21 @@ export default function AboutPage({ children }: { children?: ReactNode }) {
   );
 
   return (
-    <div className="container fluid">
-      <div className="d-flex justify-content-end">
+    <div className="container mx-auto p-3">
+      <div className="flex justify-end">
         <DarkModeSwitcher />
       </div>
-      <div className="jumbotron">
-        <div className="container">
-          <div className="col-md-auto text-center">
-            <Link to={`/${lang}`}>
-              <img src={logo} className="logo m-4 col-sm" alt="logo" />
-            </Link>
-          </div>
-          <div className="col align-middle text-center">
-            <h1 className="display-4 difference">{t.title}</h1>
-          </div>
-        </div>
+      <div className="my-10 text-center">
+        <Link to={`/${lang}`}>
+          <img
+            src={logo}
+            className="col-sm m-4 mx-auto h-auto max-w-[200px]"
+            alt="logo"
+          />
+        </Link>
+        <h1 className="mt-6 text-3xl sm:text-6xl">{t.title || '...'}</h1>
       </div>
-      <div className="container pb-4">{children}</div>
+      {children}
     </div>
   );
 }

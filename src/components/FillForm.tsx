@@ -37,23 +37,34 @@ export default function FillForm({
     }
   }, [initialValue]);
 
+  const currentValue = typeof value === 'string' ? value : initialValue;
+
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-floating">
+      <div className="relative mx-auto max-w-sm">
         <input
-          className={`form-control${error ? ' is-invalid' : ''}`}
+          className={`peer block w-full border px-3 pb-2 pt-6 text-lg ${
+            error ? 'border-red-500' : 'border-neutral-300'
+          } rounded-md dark:border-neutral-600 dark:bg-neutral-800`}
           id={id}
           name={name}
           onChange={handleChange}
-          placeholder={error || label}
           required
           type="text"
-          value={typeof value === 'string' ? value : initialValue}
+          value={currentValue}
         />
-        <label htmlFor={id}>{error || label}</label>
-        <div className="d-grid mx-auto pt-1">
-          <button type="submit" className="btn btn-primary">
-            {submitLabel}
+        <label
+          htmlFor={id}
+          className={`absolute left-1 z-10 transform cursor-text bg-white px-2 text-neutral-500 duration-300 peer-focus:top-2 peer-focus:scale-100 peer-focus:text-sm dark:bg-neutral-800 dark:text-neutral-400 ${currentValue ? 'top-2 scale-100 text-sm' : 'top-4 text-lg'}`}
+        >
+          {error || label}
+        </label>
+        <div className="mx-auto grid pt-1">
+          <button
+            type="submit"
+            className="rounded-md bg-blue-600 px-4 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            {submitLabel || '...'}
           </button>
         </div>
       </div>
