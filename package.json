@@ -21,17 +21,15 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.1",
-    "react-scripts": "5.0.1",
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "serve": "npm run build && firebase serve",
     "predeploy": "npm run build",
-    "deploy": "firebase deploy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "deploy": "firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,17 +48,18 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^9.25.0",
-    "eslint-config-airbnb-typescript": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-tailwindcss": "^3.18.0",
-    "postcss": "^8.4.33",
+    "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.3.6",
+    "vite": "^6.3.2"
   }
 }
