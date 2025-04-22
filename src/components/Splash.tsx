@@ -3,8 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { RouteParams } from '../DataTypes';
 import * as db from '../firebase';
-import logo from '../images/se-logo-color.png';
-import DarkModeSwitcher from './DarkModeSwitcher';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export function getArrayFromPropKey(
   t: { [key: string]: string },
@@ -30,13 +29,13 @@ export default function Splash({ children }: { children?: ReactNode }) {
   return (
     <div className="container mx-auto p-3">
       <div className="flex justify-end">
-        <DarkModeSwitcher />
+        <ThemeSwitcher />
       </div>
-      <div className="my-10 text-center">
+      <div className="my-10 flex flex-col items-center text-center">
         <Link to={`/${lang}`}>
           <img
-            src={logo}
-            className="col-sm m-4 mx-auto h-auto max-w-[200px]"
+            src="/se-logo-color.png"
+            className="col-sm m-4 mx-auto h-auto max-w-50"
             alt="logo"
           />
         </Link>

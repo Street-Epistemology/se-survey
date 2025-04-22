@@ -14,10 +14,7 @@ export default function NickWithBadge({
       <div className="mx-1">
         <NickBadge me={me} nickname={badgeText || nickname} />
       </div>
-      <div
-        className="mx-1 overflow-hidden"
-        style={{ maxWidth: '150px', textOverflow: 'ellipsis' }}
-      >
+      <div className="mx-1 max-w-38 overflow-hidden overflow-ellipsis">
         {nickname}
       </div>
     </>

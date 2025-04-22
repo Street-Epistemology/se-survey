@@ -11,7 +11,7 @@ import RedirectLanguage from './pages/RedirectLanguage';
 import Room from './pages/Room';
 import StartRoom from './pages/StartRoom';
 import SurveyStart from './pages/SurveyStart';
-import * as darkMode from './utils/darkModeHelper';
+import loadCurrentTheme from './utils/themeHelper';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
@@ -33,6 +33,8 @@ root.render(
   </StrictMode>,
 );
 
-if (darkMode.isDarkModeEnabled()) {
-  darkMode.enableDarkMode();
-}
+window
+  .matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', loadCurrentTheme);
+
+loadCurrentTheme();

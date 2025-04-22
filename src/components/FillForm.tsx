@@ -43,9 +43,7 @@ export default function FillForm({
     <form onSubmit={handleSubmit}>
       <div className="relative mx-auto max-w-sm">
         <input
-          className={`peer block w-full border px-3 pb-2 pt-6 text-lg ${
-            error ? 'border-red-500' : 'border-neutral-300'
-          } rounded-md dark:border-neutral-600 dark:bg-neutral-800`}
+          className={`peer block w-full rounded-md border px-3 pt-6 pb-2 text-lg dark:border-neutral-600 dark:bg-neutral-800 ${error ? 'border-red-500' : 'border-neutral-300'}`}
           id={id}
           name={name}
           onChange={handleChange}
@@ -62,7 +60,7 @@ export default function FillForm({
         <div className="mx-auto grid pt-1">
           <button
             type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-700"
+            className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-700"
           >
             {submitLabel || '...'}
           </button>

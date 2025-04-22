@@ -5,10 +5,10 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import copy from 'clipboard-copy';
 import { Link, useParams } from 'react-router-dom';
 
-import DarkModeSwitcher from '../components/DarkModeSwitcher';
 import FillForm from '../components/FillForm';
 import NickWithBadge from '../components/NickWithBadge';
 import Splash from '../components/Splash';
+import ThemeSwitcher from '../components/ThemeSwitcher';
 import {
   Answer,
   RouteParams,
@@ -17,7 +17,6 @@ import {
   ServerSurvey,
 } from '../DataTypes';
 import * as db from '../firebase';
-import logo from '../images/se-logo-color.png';
 import getCharAt from '../utils/getCharAt';
 import { getSessionKey, setSessionKey } from '../utils/sessionKey';
 
@@ -134,29 +133,29 @@ export default function Room() {
   const initialNicknameValue = room?.sessions[sessionKey]?.nickname;
 
   return (
-    <div className="my-10 p-3 print:!m-0 print:p-0 md:my-4">
+    <div className="my-4 p-3 print:m-0 print:p-0">
       <div className="pointer-events-none fixed top-0 h-full w-full print:hidden">
-        <div className="pointer-events-auto absolute right-0 top-0 float-right mx-4 my-2 flex flex-row">
+        <div className="pointer-events-auto absolute top-0 right-0 float-right mx-4 my-2 flex flex-row">
           <div className="flex justify-end">
-            <DarkModeSwitcher />
+            <ThemeSwitcher />
           </div>
-          <Popover className="group ml-6 mr-3 flex justify-end">
+          <Popover className="group mr-3 ml-6 flex justify-end">
             <PopoverButton
               aria-expanded="false"
               aria-haspopup="true"
-              className="inline-flex items-center rounded-md bg-neutral-800 px-3 py-2 text-white shadow-sm transition-colors hover:bg-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-800"
+              className="inline-flex cursor-pointer items-center rounded-md bg-neutral-800 px-3 py-2 text-white shadow-xs transition-colors hover:bg-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-800"
               id="dropdownMenuButton"
             >
               <NickWithBadge me nickname={initialNicknameValue || ''} />
               <FontAwesomeIcon
-                className="ml-2 transition-transform group-data-[open]:rotate-180"
+                className="ml-2 transition-transform group-data-open:rotate-180"
                 icon={faCaretDown}
               />
             </PopoverButton>
             <PopoverPanel
               transition
               anchor="bottom"
-              className="mt-2 w-56 rounded-md border bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
+              className="mt-2 w-56 rounded-md border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
               aria-labelledby="dropdownMenuButton"
             >
               <div className="mx-2 py-2">
@@ -185,12 +184,12 @@ export default function Room() {
 
       <div className="container mx-auto">
         <div>
-          <div className="flex flex-col items-center md:flex-row">
+          <div className="flex items-center max-md:my-10 max-md:flex-col">
             <div className="text-center md:w-auto">
               <Link to="/">
                 <img
-                  src={logo}
-                  className="m-4 h-auto max-w-[200px] print:m-0 print:mb-2 print:w-10"
+                  src="/se-logo-color.png"
+                  className="m-4 h-auto max-w-50 print:m-0 print:mb-2 print:w-10"
                   alt="logo"
                 />
               </Link>
@@ -209,14 +208,14 @@ export default function Room() {
             </div>
             <div className="mx-auto mb-2 text-center">
               <Link
-                className="mt-2 inline-block break-all rounded border border-neutral-300 bg-neutral-100 p-2 align-middle text-blue-600 underline transition-colors hover:text-blue-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-blue-400 dark:hover:text-blue-500"
+                className="mt-2 inline-block rounded-sm border border-neutral-300 bg-neutral-100 p-2 align-middle break-all text-blue-600 underline transition-colors hover:text-blue-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-blue-400 dark:hover:text-blue-500"
                 to={`/${roomURL}`}
               >
                 {roomURLFull}
               </Link>
 
               <button
-                className="mx-1 mt-2 rounded-md bg-blue-600 px-4 py-2 align-middle text-white transition-colors hover:bg-blue-700"
+                className="mx-1 mt-2 cursor-pointer rounded-md bg-blue-600 px-4 py-2 align-middle text-white transition-colors hover:bg-blue-700"
                 onClick={() => copy(roomURLFull)}
               >
                 <FontAwesomeIcon icon={faCopy} />
@@ -232,13 +231,13 @@ export default function Room() {
             previousQuestionsSum += Object.keys(section.questions || {}).length;
             return (
               <Fragment key={sectionKey}>
-                <thead className="bg-neutral-800 text-neutral-100 dark:bg-black dark:text-neutral-300">
+                <thead className="bg-neutral-800 text-neutral-100 dark:bg-black dark:text-neutral-300 print:text-white">
                   <tr>
-                    <th className="border border-neutral-700 p-2 text-left align-middle text-sm print:!text-xs md:text-base lg:text-xl">
+                    <th className="border-x border-t border-neutral-700 p-2 text-left align-middle text-sm md:text-base lg:text-xl dark:border-neutral-800 print:text-xs">
                       {section.title}
                     </th>
                     <th
-                      className="border border-neutral-700 p-2 text-center align-middle text-sm print:!text-xs md:text-base lg:text-xl"
+                      className="border-x border-t border-neutral-700 p-2 text-center align-middle text-sm md:text-base lg:text-xl dark:border-neutral-800 print:text-xs"
                       colSpan={5}
                     >
                       {section.answersTitle}
@@ -253,9 +252,9 @@ export default function Room() {
                       return (
                         <tr
                           key={questionKey}
-                          className="hover:backdrop-brightness-95 dark:hover:backdrop-brightness-75 print:!backdrop-brightness-100"
+                          className="hover:backdrop-brightness-95 has-[:focus-visible]:backdrop-brightness-95 dark:hover:backdrop-brightness-75 dark:has-[:focus-visible]:backdrop-brightness-75 print:backdrop-brightness-100"
                         >
-                          <td className="border border-neutral-300 p-2 text-sm dark:border-neutral-700 print:!text-xs md:text-base lg:text-xl">{`${questionNumber}. ${question.text}`}</td>
+                          <td className="border border-neutral-300 p-2 text-sm md:text-base lg:text-xl dark:border-neutral-700 print:text-xs">{`${questionNumber}. ${question.text}`}</td>
                           {question.values.map((value) => {
                             const sessions: Sessions = Object.keys(
                               room?.sessions || {},
@@ -281,17 +280,23 @@ export default function Room() {
 
                             return (
                               <td
-                                className="m-0 h-12 w-12 min-w-[30px] cursor-pointer border border-neutral-300 p-0 text-center align-middle text-base dark:border-neutral-700 print:h-6 print:w-6 print:!text-xs md:min-w-[40px] md:text-lg lg:min-w-[50px] lg:text-xl"
+                                className="m-0 h-12 w-12 min-w-1 border border-neutral-300 p-0 dark:border-neutral-700 print:h-8 print:w-8 print:min-w-8"
                                 key={value}
-                                onClick={() =>
-                                  handleResponse({
-                                    questionKey,
-                                    sectionKey,
-                                    value,
-                                  })
-                                }
                               >
-                                <span className="center m-0 flex flex-row justify-center text-2xl print:!text-base">
+                                <button
+                                  className="group/value m-0 flex h-full w-full cursor-pointer flex-row items-center justify-center p-0 text-center align-middle text-2xl md:text-lg lg:text-xl print:text-xs"
+                                  onClick={() =>
+                                    handleResponse({
+                                      questionKey,
+                                      sectionKey,
+                                      value,
+                                    })
+                                  }
+                                  disabled={
+                                    !room?.sessions[sessionKey]?.filling &&
+                                    !sessionKeys.length
+                                  }
+                                >
                                   {room?.sessions[sessionKey]?.filling ? (
                                     sessions[sessionKey] ? (
                                       '✓'
@@ -301,7 +306,7 @@ export default function Room() {
                                   ) : (
                                     <>
                                       <div
-                                        className={`group/value inline-flex items-center justify-center transition-colors ${sessionKeys.includes(sessionKey || '') ? 'bg-blue-600 hover:bg-blue-700' : 'bg-purple-900 hover:bg-purple-950'} text-'} h-7 min-h-[28px] w-7 rounded-full text-base font-bold text-white`}
+                                        className={`inline-flex h-7 min-h-7 w-7 items-center justify-center rounded-full text-base font-bold text-white transition-colors ${sessionKeys.includes(sessionKey || '') ? 'bg-blue-600 group-hover/value:bg-blue-700' : 'bg-purple-900 group-hover/value:bg-purple-950'}`}
                                       >
                                         {sessionKeys.length === 1 &&
                                         sessions[sessionKeys[0]].revealMyName
@@ -312,13 +317,13 @@ export default function Room() {
                                             )
                                           : sessionKeys.length}
                                         <div className="relative">
-                                          <ul className="invisible absolute right-0 z-[1000] flex max-h-[150px] flex-col overflow-hidden overflow-y-auto rounded border border-neutral-300 bg-white text-neutral-700 opacity-0 transition-opacity duration-200 group-hover/value:visible group-hover/value:opacity-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 print:hidden">
+                                          <ul className="invisible absolute right-0 z-1000 flex max-h-50 flex-col divide-y divide-neutral-300 overflow-hidden overflow-y-auto rounded-sm border border-neutral-300 bg-white text-neutral-700 opacity-0 transition-opacity duration-200 group-hover/value:visible group-hover/value:opacity-100 group-focus-visible/value:visible group-focus-visible/value:opacity-100 dark:divide-neutral-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 print:hidden">
                                             {sessionKeys.map((sessionKeyX) =>
                                               sessions[sessionKeyX]
                                                 .revealMyName ? (
                                                 <li
                                                   key={sessionKeyX}
-                                                  className="inline-flex border-b border-neutral-300 p-2 dark:border-neutral-700"
+                                                  className="inline-flex p-2"
                                                 >
                                                   <NickWithBadge
                                                     me={
@@ -339,7 +344,7 @@ export default function Room() {
                                                 !sessions[sessionKey]
                                                   .revealMyName,
                                             ) && (
-                                              <li className="inline-flex border-b border-neutral-300 p-2 last:border-b-0 dark:border-neutral-700">
+                                              <li className="inline-flex p-2">
                                                 <NickWithBadge
                                                   me={
                                                     !!sessionKeys.filter(
@@ -366,7 +371,7 @@ export default function Room() {
                                       </div>
                                     </>
                                   )}
-                                </span>
+                                </button>
                               </td>
                             );
                           })}
@@ -383,7 +388,7 @@ export default function Room() {
         {t.revealAnswers && t.changeMyAnswers && (
           <div className="mt-4 inline-flex flex-wrap gap-6 text-lg print:hidden">
             <button
-              className="rounded-md bg-blue-600 px-4 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-700"
+              className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-center text-lg font-medium text-white transition-colors hover:bg-blue-700"
               onClick={toggleFilling}
             >
               {room?.sessions[sessionKey].filling
