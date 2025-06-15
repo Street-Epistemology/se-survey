@@ -26,6 +26,8 @@ jobs:
       - name: Deploy to Firebase
         shell: bash
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          npm run deploy -- --token=$FIREBASE_TOKEN --non-interactive
+          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$GITHUB_WORKSPACE/service-account.json"
+          npm run deploy -- --non-interactive
