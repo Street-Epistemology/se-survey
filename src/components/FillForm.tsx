@@ -53,7 +53,7 @@ export default function FillForm({
         />
         <label
           htmlFor={id}
-          className={`absolute left-1 z-10 transform cursor-text bg-white px-2 text-neutral-500 duration-300 peer-focus:top-2 peer-focus:scale-100 peer-focus:text-sm dark:bg-neutral-800 dark:text-neutral-400 ${currentValue ? 'top-2 scale-100 text-sm' : 'top-4 text-lg'}`}
+          className={`absolute left-1 z-10 transform cursor-text px-2 text-neutral-500 duration-300 peer-focus:top-2 peer-focus:scale-100 peer-focus:text-sm dark:text-neutral-400 ${currentValue ? 'top-2 scale-100 text-sm' : 'top-4 text-lg'}`}
         >
           {error || label}
         </label>

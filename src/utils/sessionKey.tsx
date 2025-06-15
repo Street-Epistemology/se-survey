@@ -4,8 +4,8 @@ export function getSessionKey({
   surveyKey,
 }: {
   lang: string;
-  roomKey?: string;
-  surveyKey?: string;
+  roomKey: string;
+  surveyKey: string;
 }): string {
   return (
     localStorage.getItem(`${lang}_${surveyKey}_${roomKey}_sessionKey`) || ''
@@ -13,15 +13,18 @@ export function getSessionKey({
 }
 
 export function setSessionKey({
-  key,
   lang,
-  roomKey,
   surveyKey,
+  roomKey,
+  sessionKey,
 }: {
-  key: string | null;
   lang: string;
-  roomKey?: string | null;
-  surveyKey?: string;
+  surveyKey: string;
+  roomKey: string;
+  sessionKey: string;
 }): void {
-  localStorage.setItem(`${lang}_${surveyKey}_${roomKey}_sessionKey`, `${key}`);
+  localStorage.setItem(
+    `${lang}_${surveyKey}_${roomKey}_sessionKey`,
+    `${sessionKey}`,
+  );
 }

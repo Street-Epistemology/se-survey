@@ -3,25 +3,32 @@ import parse from 'html-react-parser';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
 import Splash, { getArrayFromPropKey } from '../components/Splash';
-import { RouteParams } from '../DataTypes';
+import { RouteParams, ServerSurveys, Translations } from '../DataTypes';
 import * as db from '../firebase';
+import { getAllTranslationsWithCache } from '../utils/translationCache';
 
 const defaultLang = 'en';
-const defaultsurveyKey = 'nathan';
 
 export default function SurveyStart() {
-  const { lang = defaultLang, surveyKey = defaultsurveyKey } =
-    useParams<RouteParams>();
-  const [t, setTranslations] = useState<{ [key: string]: string }>({});
+  const { lang = defaultLang } = useParams<RouteParams>();
+  const [translations, setTranslations] = useState<Translations>();
+  const [surveys, setSurveys] = useState<ServerSurveys>();
 
-  useEffect(
-    () => db.getOnOff(`/translations/${lang}`, setTranslations),
-    [lang],
-  );
+  const languages = translations && Object.keys(translations);
+  const t = translations?.[lang];
 
-  if (!t?.description) {
-    return <Navigate to={`/${defaultLang}`} replace />;
+  useEffect(() => getAllTranslationsWithCache(setTranslations), []);
+  useEffect(() => db.getOnOff(`/surveys/${lang}`, setSurveys), [lang]);
+
+  if (languages && !languages.includes(lang)) {
+    if (languages.includes(lang.split('-')[0])) {
+      return <Navigate to={`/${lang.split('-')[0]}`} replace />;
+    }
+
+    return <Navigate to={defaultLang} replace />;
   }
+
+  if (!t) return <></>;
 
   return (
     <Splash>
@@ -34,12 +41,18 @@ export default function SurveyStart() {
           ),
         )}
       </ol>
-      <Link
-        className="mt-4 block rounded-md bg-blue-600 px-4 py-2 text-center text-xl font-medium text-white hover:bg-blue-700"
-        to={`/${lang}/${surveyKey}/new`}
-      >
-        {t.start}
-      </Link>
+      {surveys &&
+        Object.keys(surveys)
+          .filter((surveyKey) => surveys[surveyKey].public)
+          .map((surveyKey) => (
+            <Link
+              key={surveyKey}
+              className="mt-4 block rounded-md bg-blue-600 px-4 py-2 text-center text-xl font-medium text-white hover:bg-blue-700"
+              to={`/${lang}/${surveyKey}/new`}
+            >
+              {t.start}
+            </Link>
+          ))}
     </Splash>
   );
 }

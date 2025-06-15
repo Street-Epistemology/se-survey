@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { RouteParams } from '../DataTypes';
-import * as db from '../firebase';
+import { getTranslationsWithCache } from '../utils/translationCache';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export function getArrayFromPropKey(
@@ -18,13 +18,10 @@ export function getArrayFromPropKey(
 }
 
 export default function Splash({ children }: { children?: ReactNode }) {
-  const { lang } = useParams<RouteParams>();
+  const { lang = '' } = useParams<RouteParams>();
   const [t, setTranslations] = useState<{ [key: string]: string }>({});
 
-  useEffect(
-    () => db.getOnOff(`/translations/${lang}`, setTranslations),
-    [lang],
-  );
+  useEffect(() => getTranslationsWithCache(lang, setTranslations), [lang]);
 
   return (
     <div className="container mx-auto p-3">

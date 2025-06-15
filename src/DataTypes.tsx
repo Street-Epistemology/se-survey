@@ -85,10 +85,8 @@ export interface ServerSurvey {
 }
 
 export interface ServerSurveys {
-  surveys: {
-    [languageKey: string]: {
-      [surveyKey: string]: ServerSurvey;
-    };
+  [languageKey: string]: {
+    [surveyKey: string]: ServerSurvey;
   };
 }
 
@@ -108,8 +106,12 @@ export interface AboutTypes {
   title?: string;
 }
 
+export interface LanguageTranslations {
+  [key: string]: string;
+}
+
 export interface Translations {
-  about: AboutTypes;
+  [languageKey: string]: LanguageTranslations;
 }
 
 export type SessionType = 'hosting' | 'spectating';

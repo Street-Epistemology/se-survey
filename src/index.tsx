@@ -3,11 +3,10 @@ import { createRoot } from 'react-dom/client';
 
 import './index.css';
 
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import ScrollToTop from './components/ScrollToTop';
 import About from './pages/About';
-import RedirectLanguage from './pages/RedirectLanguage';
 import Room from './pages/Room';
 import StartRoom from './pages/StartRoom';
 import SurveyStart from './pages/SurveyStart';
@@ -19,7 +18,7 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <Router>
+    <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/:lang/about" element={<About />} />
@@ -27,9 +26,12 @@ root.render(
         <Route path="/:lang/:surveyKey/:roomKey" element={<Room />} />
         <Route path="/:lang/:surveyKey" element={<SurveyStart />} />
         <Route path="/:lang" element={<SurveyStart />} />
-        <Route path="/" element={<RedirectLanguage />} />
+        <Route
+          index
+          element={<Navigate to={`/${navigator.language}`} replace />}
+        />
       </Routes>
-    </Router>
+    </BrowserRouter>
   </StrictMode>,
 );
 

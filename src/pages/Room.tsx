@@ -11,6 +11,7 @@ import Splash from '../components/Splash';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import {
   Answer,
+  LanguageTranslations,
   RouteParams,
   ServerRoom,
   ServerSession,
@@ -19,6 +20,7 @@ import {
 import * as db from '../firebase';
 import getCharAt from '../utils/getCharAt';
 import { getSessionKey, setSessionKey } from '../utils/sessionKey';
+import { getTranslationsWithCache } from '../utils/translationCache';
 
 interface Sessions {
   [key: string]: {
@@ -28,7 +30,7 @@ interface Sessions {
 }
 
 export default function Room() {
-  const { lang = '', roomKey, surveyKey } = useParams<RouteParams>();
+  const { lang = '', surveyKey = '', roomKey = '' } = useParams<RouteParams>();
 
   const roomURL = `${lang}/${surveyKey}/${roomKey}`;
   const roomURLFull = `${window.location.protocol}//${window.location.host}/${roomURL}`;
@@ -36,15 +38,12 @@ export default function Room() {
 
   const sessionKey: string = getSessionKey({ lang, roomKey, surveyKey });
 
-  const [room, setRoom] = useState<ServerRoom | undefined>();
   const [survey, setSurvey] = useState<ServerSurvey>({ sections: {} });
-  const [t, setTranslations] = useState<{ [key: string]: string }>({});
+  const [room, setRoom] = useState<ServerRoom | undefined>();
+  const [t, setTranslations] = useState<LanguageTranslations>({});
   const [error, setError] = useState('');
 
-  useEffect(
-    () => db.getOnOff(`/translations/${lang}`, setTranslations),
-    [lang],
-  );
+  useEffect(() => getTranslationsWithCache(lang, setTranslations), [lang]);
 
   useEffect(
     () => db.getOnOff(`/surveys/${lang}/${surveyKey}`, setSurvey),
@@ -73,19 +72,20 @@ export default function Room() {
 
   const handleNickname = async (nickname: string) => {
     try {
+      const sessionsURI = `${roomURI}/sessions`;
+
       if (!sessionKey) {
-        const sessionsURI = `${roomURI}/sessions`;
-        const { key } = await db.push(sessionsURI);
-        await db.set(`${sessionsURI}/${key}`, { filling: true, nickname });
-        setSessionKey({
-          lang: lang || '',
-          surveyKey: surveyKey || '',
-          roomKey: roomKey || '',
-          key,
+        const { key: sessionKey } = await db.push(sessionsURI);
+        if (!sessionKey) return;
+        await db.set(`${sessionsURI}/${sessionKey}`, {
+          filling: true,
+          nickname,
         });
+        setSessionKey({ lang, surveyKey, roomKey, sessionKey });
         return;
       }
-      await db.set(`${roomURI}/sessions/${sessionKey}/nickname`, nickname);
+
+      await db.set(`${sessionsURI}/${sessionKey}/nickname`, nickname);
     } catch (error) {
       setError(
         (error instanceof Error && error.toString().split(':').pop()) ||
@@ -163,11 +163,11 @@ export default function Room() {
                   error={error}
                   id="menuNickname"
                   initialValue={initialNicknameValue}
-                  label="Enter nickname"
+                  label={t.enterNickname}
                   name="nickname"
                   onChange={() => setError('')}
                   onSubmit={handleNickname}
-                  submitLabel="Set nickname"
+                  submitLabel={t.changeNickname}
                 />
               </div>
               <div className="border-t border-neutral-200 dark:border-neutral-700"></div>
@@ -175,7 +175,7 @@ export default function Room() {
                 className="block px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                 to={`/${lang}/about`}
               >
-                About
+                {t.buttonAbout}
               </Link>
             </PopoverPanel>
           </Popover>
